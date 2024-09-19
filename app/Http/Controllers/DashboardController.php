@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class DashboardController extends Controller
+{
+    public function getDashboardPage()
+    {
+        return view('Pages.Dashboard', [
+            'title' => 'Dashboard'
+        ]);
+    }
+}
