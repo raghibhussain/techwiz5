@@ -21,6 +21,7 @@ Route::prefix('/')->group(function () {
 
     Route::prefix('expense')->group(function () {
         Route::get('/', [ExpenseController::class, 'getExpensePage'])->name('pages.expense');
+        Route::get('log', [ExpenseController::class, 'getExpenseLogPage'])->name('Pages.ExpenseLog');
     });
 
     Route::get('profile', [AuthController::class, 'getProfilePage'])->name('Auth.Profile');
@@ -44,8 +45,14 @@ Route::prefix('api/v1')->group(function () {
         Route::post('add', [TripController::class, 'AddTrip'])->name('Trip.Post.Add');
     });
 
+    Route::prefix('expense')->group(function () {
+        Route::post('log', [ExpenseController::class, 'logExpenses'])->name('Expense.Log');
+    });
+
 
     Route::prefix('admin')->group(function () {
-        Route::post('add', [DestinationController::class, 'AddDestination'])->name('Add.Destination.Post');
+        Route::prefix('destination')->group(function () {
+            Route::post('add', [DestinationController::class, 'AddDestination'])->name('Add.Destination.Post');
+        });
     });
 });

@@ -102,7 +102,7 @@ class TripController extends Controller
     public function getTripsPage()
     {
 
-        $trips = Trips::with('trip_destination', 'accomodations')->get();
+        $trips = Trips::where('user_id', Auth::user()->id)->with('trip_destination', 'accomodations')->get();
 
 
         $destinations = Destinations::all();

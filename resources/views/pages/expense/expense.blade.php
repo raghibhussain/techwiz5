@@ -1,5 +1,12 @@
 @extends('Layout.Layout')
 @section('main-content')
+    <style>
+        .morris-default-style {
+            border: none !important;
+        }
+    </style>
+
+
     <!-- Main Content -->
 
     <div class="container pt-30">
@@ -149,7 +156,7 @@
                             </div>
                             <div class="panel-heading">
                                 <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">Activities Expenses</h6>
+                                    <h6 class="panel-title txt-dark">Expenses By Categories</h6>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="pull-left inline-block refresh mr-15">
@@ -158,18 +165,6 @@
                                     <a href="#" class="pull-left inline-block full-screen mr-15">
                                         <i class="zmdi zmdi-fullscreen"></i>
                                     </a>
-                                    <div class="pull-left inline-block dropdown">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                            aria-expanded="false" role="button"><i class="zmdi zmdi-more-vert"></i></a>
-                                        <ul class="dropdown-menu bullet dropdown-menu-right" role="menu">
-                                            <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i
-                                                        class="icon wb-reply" aria-hidden="true"></i>Edit</a></li>
-                                            <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i
-                                                        class="icon wb-share" aria-hidden="true"></i>Delete</a></li>
-                                            <li role="presentation"><a href="javascript:void(0)" role="menuitem"><i
-                                                        class="icon wb-trash" aria-hidden="true"></i>New</a></li>
-                                        </ul>
-                                    </div>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -180,70 +175,66 @@
                                             <table class="table table-hover mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th>Places</th>
-                                                        <th>visit places</th>
-                                                        <th>Popularity</th>
+                                                        <th>Category</th>
                                                         <th>Budget</th>
-                                                        <th>Status </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach ($categoriesExpense as $expense)
+                                                        <tr>
+                                                            <td><span
+                                                                    class="txt-dark weight-500">{{ $expense->type }}</span>
+                                                            </td>
+                                                            <td>{{ $expense->Amount }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="panel panel-default border-panel card-view panel-refresh">
+                            <div class="refresh-container">
+                                <div class="la-anim-1"></div>
+                            </div>
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <h6 class="panel-title txt-dark">Expenses By Trips</h6>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#" class="pull-left inline-block refresh mr-15">
+                                        <i class="zmdi zmdi-replay"></i>
+                                    </a>
+                                    <a href="#" class="pull-left inline-block full-screen mr-15">
+                                        <i class="zmdi zmdi-fullscreen"></i>
+                                    </a>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="panel-wrapper collapse in">
+                                <div class="panel-body row pa-0">
+                                    <div class="table-wrap">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead>
                                                     <tr>
-                                                        <td><span class="txt-dark weight-500">maldives</span>
-                                                        </td>
-                                                        <td>Beach</td>
-                                                        <td><span class="txt-success"><i
-                                                                    class="zmdi zmdi-caret-up mr-10 font-20"></i><span>2.43%</span></span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="txt-dark weight-500">$1478</span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="label label-success">Open</span>
-                                                        </td>
+                                                        <th>Category</th>
+                                                        <th>Budget</th>
                                                     </tr>
-                                                    <tr>
-                                                        <td><span class="txt-dark weight-500">Paris</span>
-                                                        </td>
-                                                        <td>Efil Tower</td>
-                                                        <td><span class="txt-success"><i
-                                                                    class="zmdi zmdi-caret-up mr-10 font-20"></i><span>1.43%</span></span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="txt-dark weight-500">$951</span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="label label-danger">Closed</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="txt-dark weight-500">Dubai</span>
-                                                        </td>
-                                                        <td>city's skyline</td>
-                                                        <td><span class="txt-danger"><i
-                                                                    class="zmdi zmdi-caret-down mr-10 font-20"></i><span>-8.43%</span></span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="txt-dark weight-500">$632</span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="label label-default">Hold</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><span class="txt-dark weight-500">Pakistan</span>
-                                                        </td>
-                                                        <td>Fairy Medows</td>
-                                                        <td><span class="txt-success"><i
-                                                                    class="zmdi zmdi-caret-up mr-10 font-20"></i><span>7.43%</span></span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="txt-dark weight-500">$100</span>
-                                                        </td>
-                                                        <td>
-                                                            <span class="label label-default">Hold</span>
-                                                        </td>
-                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($TripsExpense as $expense)
+                                                        <tr>
+                                                            <td><span
+                                                                    class="txt-dark weight-500">{{ $expense->tripName }}</span>
+                                                            </td>
+                                                            <td>{{ $expense->budget }}</td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -289,7 +280,7 @@
                     fillOpacity: 0.2,
                     hoverCallback: function(index, options, content, row) {
                         // Custom hover to display more details
-                        return `<div>Type: ${row.type}<br>
+                        return `<div style="background-color: #FF6028;">Type: ${row.type}<br>
                                     Category: ${row.AccomodationOrActivity}<br>
                                     Amount: ${row.Amount}<br>
                                     Date: ${row.created_at}

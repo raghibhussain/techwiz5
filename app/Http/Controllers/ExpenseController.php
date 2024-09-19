@@ -14,10 +14,23 @@ class ExpenseController extends Controller
         $TotalBudget = Trips::where('user_id', Auth::user()->id)->sum('budget');
         $usedExpenses = activity_accomodation::where('user_id', Auth::user()->id)->sum('Amount');
 
-        $usedPercentage = round(($usedExpenses / $TotalBudget) * 100, 2);
-        $leftPercentage = round(100 - $usedPercentage, 2);
-
+        if ($TotalBudget > 0) {
+            $usedPercentage = round(($usedExpenses / $TotalBudget) * 100, 2);
+            $leftPercentage = round(100 - $usedPercentage, 2);
+        } else {
+            $usedPercentage = 0;
+            $leftPercentage = 0;
+        }
         $ExpenseData = activity_accomodation::where('user_id', Auth::user()->id)->get();
+
+        $categorySpecificExpenceData = activity_accomodation::where('user_id', Auth::user()->id)
+            ->select('type', 'Amount')
+            ->get();
+
+        $TripsExpense = Trips::where('user_id', Auth::user()->id)
+            ->select(['budget', 'tripName'])
+            ->get();
+
 
         // return response()->json($ExpenseData);
 
@@ -26,7 +39,39 @@ class ExpenseController extends Controller
             'totalBudget' => $TotalBudget,
             'LeftPercentage' => $leftPercentage,
             'UsedPercentage' => $usedPercentage,
-            'ExpenseData' => $ExpenseData
+            'ExpenseData' => $ExpenseData,
+            'categoriesExpense' => $categorySpecificExpenceData,
+            'TripsExpense' => $TripsExpense
         ]);
+    }
+
+    public function getExpenseLogPage()
+    {
+        $category = activity_accomodation::where('user_id', Auth::user()->id)->select('type')->get();
+        $openTrip = Trips::where('user_id', Auth::user()->id)->select('tripName', 'id')->where('status', 1)->first();
+
+        return view('pages.expense.log', [
+            'title' => 'Log Expense',
+            'category' => $category,
+            'openTrip' => $openTrip
+        ]);
+    }
+
+    public function logExpenses(Request $req)
+    {
+        $validate = $req->validate(
+            [
+                'tripe_id' => 'required|integer',
+                "category" => 'required|string',
+                'Amount' => 'required|integer',
+                'ExpesnseNote' => 'required|string'
+            ],
+            [
+                'trip_id.required' => "Your don't have any active trips",
+                'category.required' => 'Please select or add new category',
+                'Amount.required' => 'Please input amount',
+                'ExpesnseNote.required' => 'Please Enter Expense Note'
+            ]
+        );
     }
 }
