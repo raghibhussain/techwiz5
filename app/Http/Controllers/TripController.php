@@ -96,7 +96,8 @@ class TripController extends Controller
             $expense->trip_id = $trip->id;
             $expense->type = $exa['Type'];
             $expense->AccomodationOrActivity = $exa['AccomodationOrActivity'];
-            $expense->Amount     = $exa['AccomodationAmount'];
+            $expense->Amount = $exa['AccomodationAmount'];
+            $expense->currency = $validate['currency'];
             $expense->save();
         }
 

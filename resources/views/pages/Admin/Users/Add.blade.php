@@ -25,8 +25,7 @@
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body pt-0">
                             <div class="form-wrap">
-                                <form action="{{ route('Auth.Post.Add.Destination') }}" method="POST"
-                                    enctype="multipart/form-data">
+                                <form action="{{ route('Post.AddUser') }}" method="POST">
                                     @csrf
                                     <h6 class="txt-dark flex flex-middle  capitalize-font"><i
                                             class="font-20 txt-grey zmdi zmdi-info-outline mr-10"></i>User Details</h6>
@@ -94,14 +93,23 @@
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="control-label mb-10">Phone Number</label>
-                                                <input type="text" id="Phone" name="Phone" class="form-control"
-                                                    placeholder="Enter First Name" value="{{ old('Phone') }}">
-                                                @error('Phone')
+                                                <label class="control-label mb-10">Currency Preferences</label>
+                                                <select class="form-control form-select" name="currency" id="currency">
+                                                    <option value="">Select Currency
+                                                        Preferences</option>
+                                                    @foreach ($currencies as $currency)
+                                                        <option value="{{ $currency->base }}"
+                                                            {{ old('currency') == $currency->base ? 'selected' : null }}>
+                                                            {{ $currency->base }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+
+                                                @error('currency')
                                                     <span class="text-danger fw-bold">
                                                         {{ $message }}
-                                                    <span>
-                                               @enderror
+                                                        <span>
+                                                        @enderror
                                             </div>
                                         </div>
 

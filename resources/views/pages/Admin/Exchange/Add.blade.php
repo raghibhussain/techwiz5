@@ -294,6 +294,37 @@
             $('form').on('submit', function() {
                 getCurrencyExchange();
             })
+
+            $(document).on('change', '.ConversionCurrency', function() {
+
+                console.log('changed')
+
+                var selectedCurrency = $(this).val();
+                var symbol;
+
+                switch (selectedCurrency) {
+                    case 'PKR':
+                        symbol = 'Rs';
+                        break;
+                    case 'LP':
+                        symbol = '£P';
+                        break;
+                    case 'GBP':
+                        symbol = '£';
+                        break;
+                    case 'EUR':
+                        symbol = '€';
+                        break;
+                    case 'USD':
+                        symbol = '$';
+                        break;
+                    default:
+                        symbol = '';
+                }
+
+                $(this).closest('.exchangeRateDiv').find('.exchangeSymbol').val(symbol);
+                console.log($(this).closest('.exchangeRateDiv').html())
+            });
         })
     </script>
 @endsection

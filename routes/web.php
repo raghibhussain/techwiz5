@@ -23,6 +23,7 @@ Route::prefix('/')->group(function () {
         Route::get('/', [TripController::class, 'getTripsPage'])->name('pages.trips');
         Route::get('add', [TripController::class, 'getTipAddPage'])->name('pages.add.trip');
         Route::get('edit/{id}', [TripController::class, 'getTripEditPage'])->name('page.edit.trip');
+        Route::get('trip', [TripController::class, 'getTripDetails'])->name('Pages.TripeDetails');
     });
 
     Route::prefix('expense')->group(function () {
@@ -82,9 +83,7 @@ Route::prefix('api/v1')->group(function () {
         Route::post('log', [ExpenseController::class, 'logExpenses'])->name('Expense.Log');
     });
 
-    Route::prefix('exchange')->group(function () {
-        Route::post('add', [ExchangeController::class, 'addCurrency'])->name('Currency.Add');
-    });
+
 
     Route::prefix('destination')->group(function () {
         Route::post('add', [UserDestinationController::class, 'AddDestination'])->name('Auth.Post.Add.Destination');
@@ -93,6 +92,14 @@ Route::prefix('api/v1')->group(function () {
     Route::prefix('admin')->group(function () {
         Route::prefix('destination')->group(function () {
             Route::post('add', [DestinationController::class, 'AddDestination'])->name('Add.Destination.Post');
+        });
+
+        Route::prefix('exchange')->group(function () {
+            Route::post('add', [ExchangeController::class, 'addCurrency'])->name('Currency.Add');
+        });
+
+        Route::prefix('user')->group(function () {
+            Route::post('add', [UserController::class, 'AddUserPost'])->name('Post.AddUser');
         });
     });
 });

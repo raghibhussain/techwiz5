@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('currency_preference');
-            $table->text('image_url');
-            $table->text('banner_url');
+            $table->string('currency_preference')->nullable()->defaultValue('PRK');
+            $table->text('image_url')->nullable();
+            $table->text('banner_url')->nullable();
         });
     }
 

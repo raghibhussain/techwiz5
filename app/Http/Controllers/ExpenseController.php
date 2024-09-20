@@ -27,7 +27,7 @@ class ExpenseController extends Controller
 
         $currencyExchangeRate = currencyExchange::where('base', $ExpenseData[0]->currency)->where('conversion', Auth::user()->currency_preference)->first();
 
-
+        return response()->json($ExpenseData);
         $categorySpecificExpenceData = activity_accomodation::where('user_id', Auth::user()->id)
             ->select('type', DB::raw('SUM(Amount) as total_amount'))
             ->groupBy('type')
