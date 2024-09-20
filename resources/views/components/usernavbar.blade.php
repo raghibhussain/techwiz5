@@ -37,10 +37,10 @@
               </a>
               <ul id="expense_dr" class="collapse collapse-level-1">
                   <li>
-                      <a href="{{ route('pages.expense') }}">View All</a>
+                      <a href="{{ route('Pages.Destination') }}">View All</a>
                   </li>
                   <li>
-                      <a href="{{ route('Pages.ExpenseLog') }}">Add Destinatinos</a>
+                      <a href="{{ route('Pages.AddDestination') }}">Add Destinatinos</a>
                   </li>
               </ul>
           </li>

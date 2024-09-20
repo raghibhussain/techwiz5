@@ -43,7 +43,7 @@
                                                                     class="txt-dark weight-500">{{ $currency->base }}</span>
                                                             </td>
                                                             <td>{{ $currency->conversion }}</td>
-                                                            <td>{{ $currency->rate }}</td>
+                                                            <td>{{ $currency->symbol }} {{ $currency->rate }}</td>
                                                         </tr>
                                                     @endforeach
 

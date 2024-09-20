@@ -33,6 +33,25 @@
                                     </h6>
                                     <hr class="light-grey-hr" />
                                     <div class="row">
+
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="control-label mb-10">User</label>
+                                                <select class="form-control form-select" name="user_id">
+                                                    <option value="">Select User</option>
+                                                    @foreach ($users as $user)
+                                                        <option value="{{ $user->id }}">
+                                                            {{ $user->FirstName . ' ' . $user->LastName }} </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('user_id')
+                                                    <span class="text-danger fw-bold">
+                                                        {{ $message }}
+                                                        <span>
+                                                        @enderror
+                                            </div>
+                                        </div>
+
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Destination name</label>

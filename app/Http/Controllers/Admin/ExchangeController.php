@@ -26,6 +26,7 @@ class ExchangeController extends Controller
 
     public function addCurrency(Request $req)
     {
+
         $exchange = json_decode($req->input('currencyExchangeRates'));
 
         foreach ($exchange->rates as $cr) {
@@ -33,6 +34,7 @@ class ExchangeController extends Controller
             $currency->base = $exchange->base;
             $currency->conversion = $cr->curr;
             $currency->rate = $cr->rate;
+            $currency->symbol = $cr->symbol;
             $currency->save();
         }
 

@@ -3,7 +3,7 @@
     <div class="container">
         <!-- Title -->
         <div class="row heading-bg">
-            <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
                 <h5 class="txt-dark">Log Expense</h5>
             </div>
             <!-- Breadcrumb -->
@@ -41,7 +41,7 @@
                                     </h6>
                                     <hr class="light-grey-hr" />
                                     <div class="row exchangeRateDiv">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
 
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Base Currency</label>
@@ -64,7 +64,7 @@
                                                         @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
 
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Conversion Currency</label>
@@ -89,7 +89,7 @@
                                                         @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
 
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Exchange Rate</label>
@@ -97,6 +97,20 @@
                                                     placeholder="Enter Exchange Rate">
 
                                                 @error('echangeRate')
+                                                    <span class="text-danger fw-bold">
+                                                        {{ $message }}
+                                                        <span>
+                                                        @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label class="control-label mb-10">Exchange Symbol</label>
+                                                <input type="text" name="exchangeSymbol"
+                                                    class="form-control exchangeSymbol" placeholder="Enter Exchange Symbol">
+
+                                                @error('exchangeSymbol')
                                                     <span class="text-danger fw-bold">
                                                         {{ $message }}
                                                         <span>
@@ -169,7 +183,7 @@
 
                 let html = `
                   <div class="row exchangeRateDiv">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
 
                                             <div class="form-group">
                                                 <label class="control-label baseCurrency mb-10">Base Currency</label>
@@ -184,7 +198,7 @@
                                                         @enderror
                                             </div>
                                         </div>
-                                      <div class="col-md-4">
+                                      <div class="col-md-3">
 
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Conversion Currency</label>
@@ -209,7 +223,7 @@
                                                         @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
 
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Exchange Rate</label>
@@ -217,6 +231,20 @@
                                                     placeholder="Enter Exchange Rate">
 
                                                 @error('echangeRate')
+                                                    <span class="text-danger fw-bold">
+                                                        {{ $message }}
+                                                        <span>
+                                                        @enderror
+                                            </div>
+                                        </div>
+                                         <div class="col-md-3">
+
+                                            <div class="form-group">
+                                                <label class="control-label mb-10">Exchange Symbol</label>
+                                                <input type="text" name="exchangeSymbol" class="form-control exchangeSymbol"
+                                                    placeholder="Enter Exchange Symbol">
+
+                                                @error('exchangeSymbol')
                                                     <span class="text-danger fw-bold">
                                                         {{ $message }}
                                                         <span>
@@ -239,6 +267,7 @@
                     let baseCurrency = $(this).find('.baseCurrency').val();
                     let ConversionCurrency = $(this).find('.ConversionCurrency').val();
                     let ExchangeRate = $(this).find('.echangeRate').val();
+                    let exchangeSymbol = $(this).find('.exchangeSymbol').val();
 
                     // If the base currency is not already added, initialize it
                     if (!currencyExchange.base) {
@@ -250,7 +279,8 @@
                     if (ConversionCurrency && ExchangeRate) {
                         currencyExchange.rates.push({
                             rate: ExchangeRate,
-                            curr: ConversionCurrency
+                            curr: ConversionCurrency,
+                            symbol: exchangeSymbol
                         });
                     }
                 });

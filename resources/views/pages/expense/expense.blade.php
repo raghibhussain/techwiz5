@@ -22,8 +22,8 @@
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
-                                                    <span class="txt-dark block counter">$<span
-                                                            class="counter-anim">{{ $totalBudget }}</span></span>
+                                                    <span
+                                                        class="txt-dark block counter">{{ format_currency($totalBudget, $exchange->rate, $exchange->symbol) }}</span>
                                                     <span class="capitalize-font block">Total Budget</span>
                                                 </div>
                                                 <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
@@ -185,7 +185,8 @@
                                                             <td><span
                                                                     class="txt-dark weight-500">{{ $expense->type }}</span>
                                                             </td>
-                                                            <td>{{ $expense->total_amount }}</td>
+                                                            <td>{{ format_currency($expense->total_amount, $exchange->rate, $exchange->symbol) }}
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
@@ -232,7 +233,8 @@
                                                             <td><span
                                                                     class="txt-dark weight-500">{{ $expense->tripName }}</span>
                                                             </td>
-                                                            <td>{{ $expense->budget }}</td>
+                                                            <td>{{ format_currency($expense->budget, $exchange->rate, $exchange->symbol) }}
+
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

@@ -45,22 +45,6 @@
               </ul>
           </li>
           <li>
-              <a href="javascript:void(0);" data-toggle="collapse" data-target="#expense_dr">
-                  <div class="pull-left"><i class="zmdi zmdi-balance-wallet  mr-10"></i><span
-                          class="right-nav-text">Expense</span></div>
-                  <div class="pull-right"><i class="ti-angle-down"></i></div>
-                  <div class="clearfix"></div>
-              </a>
-              <ul id="expense_dr" class="collapse collapse-level-1">
-                  <li>
-                      <a href="{{ route('pages.expense') }}">View All</a>
-                  </li>
-                  <li>
-                      <a href="{{ route('Pages.ExpenseLog') }}">Log Expense</a>
-                  </li>
-              </ul>
-          </li>
-          <li>
               <a href="javascript:void(0);" data-toggle="collapse" data-target="#exchange_rate">
                   <div class="pull-left"><i class="zmdi zmdi-money  mr-10"></i><span class="right-nav-text">Exchange
                           Rates</span></div>
@@ -85,10 +69,10 @@
               </a>
               <ul id="exchange_rate" class="collapse collapse-level-1">
                   <li>
-                      <a href="{{ route('pages.expense') }}">View All</a>
+                      <a href="{{ route('Admin.Users') }}">View All</a>
                   </li>
                   <li>
-                      <a href="{{ route('Pages.ExpenseLog') }}">Add New</a>
+                      <a href="{{ route('Admin.AddUser') }}">Add New</a>
                   </li>
               </ul>
           </li>

@@ -94,12 +94,11 @@
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Currency</label>
                                                 <select class="form-control" name="currency" tabindex="1">
-                                                    <option value="USD" value="{{ old('USD') ? 'selected' : null }}">USD
-                                                    </option>
-                                                    <option value="GBP" value="{{ old('GBP') ? 'selected' : null }}">GBP
-                                                    </option>
-                                                    <option value="Euro" value="{{ old('Euro') ? 'selected' : null }}">
-                                                        Euro</option>
+                                                    @foreach ($currency as $cur)
+                                                        <option value="{{ $cur->base }}"
+                                                            {{ old('currency') === $cur->base ? 'selected' : '' }}>
+                                                            {{ $cur->base }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>

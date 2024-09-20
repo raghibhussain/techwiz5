@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\activity_accomodation;
+use App\Models\currencyExchange;
 use App\Models\Trips;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,9 @@ class ExpenseController extends Controller
             $leftPercentage = 0;
         }
         $ExpenseData = activity_accomodation::where('user_id', Auth::user()->id)->get();
+
+        $currencyExchangeRate = currencyExchange::where('base', $ExpenseData[0]->currency)->where('conversion', Auth::user()->currency_preference)->first();
+
 
         $categorySpecificExpenceData = activity_accomodation::where('user_id', Auth::user()->id)
             ->select('type', DB::raw('SUM(Amount) as total_amount'))
@@ -45,7 +49,8 @@ class ExpenseController extends Controller
             'UsedPercentage' => $usedPercentage,
             'ExpenseData' => $ExpenseData,
             'categoriesExpense' => $categorySpecificExpenceData,
-            'TripsExpense' => $TripsExpense
+            'TripsExpense' => $TripsExpense,
+            'exchange' => $currencyExchangeRate
         ]);
     }
 
@@ -85,6 +90,7 @@ class ExpenseController extends Controller
         $expense->trip_id = $validate['trip_id'];
         $expense->Amount = $validate['Amount'];
         $expense->AccomodationOrActivity = $validate['ExpesnseNote'];
+        $expense->currency = Auth::user()->currency_preference;
         $expense->save();
 
         return redirect()->route('pages.expense')->with(['success' => 'Expense Logged Successfully']);

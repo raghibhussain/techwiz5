@@ -27,28 +27,13 @@
                                                     <input class="upload" type="file">
                                                 </div>
                                             </div>
-                                            <h5 class="block mt-10 weight-500 capitalize-font txt-dark">Madalyn Rascon
+                                            <h5 class="block mt-10 weight-500 capitalize-font txt-dark">
+                                                {{ Auth::user()->FirstName . ' ' . Auth::user()->LastName }}
                                             </h5>
-                                            <h6 class="block capitalize-font">Developer Geek</h6>
+                                            <h6 class="block capitalize-font">{{ Auth::user()->email }}</h6>
                                         </div>
                                         <div class="social-info">
-                                            <div class="row">
-                                                <div class="col-xs-4 text-center">
-                                                    <span class="counts block head-font"><span
-                                                            class="counter-anim">345</span></span>
-                                                    <span class="counts-text block">post</span>
-                                                </div>
-                                                <div class="col-xs-4 text-center">
-                                                    <span class="counts block head-font"><span
-                                                            class="counter-anim">246</span></span>
-                                                    <span class="counts-text block">followers</span>
-                                                </div>
-                                                <div class="col-xs-4 text-center">
-                                                    <span class="counts block head-font"><span
-                                                            class="counter-anim">898</span></span>
-                                                    <span class="counts-text block">tweets</span>
-                                                </div>
-                                            </div>
+
                                             <button class="btn btn-orange btn-block  btn-anim mt-15" data-toggle="modal"
                                                 data-target="#myModal"><i class="fa fa-pencil"></i><span
                                                     class="btn-text">edit profile</span></button>
@@ -70,13 +55,17 @@
                                                                             <div class="panel-body pa-0">
                                                                                 <div class="col-sm-12 col-xs-12">
                                                                                     <div class="form-wrap">
-                                                                                        <form action="#">
+                                                                                        <form
+                                                                                            action="{{ route('Auth.Post.Update.Profile') }}"
+                                                                                            method="POST">
+                                                                                            @csrf
                                                                                             <div
                                                                                                 class="form-body overflow-hide">
                                                                                                 <div class="form-group">
                                                                                                     <label
                                                                                                         class="control-label mb-10"
-                                                                                                        for="exampleInputuname_1">Name</label>
+                                                                                                        for="exampleInputuname_1">First
+                                                                                                        Name</label>
                                                                                                     <div
                                                                                                         class="input-group">
                                                                                                         <div
@@ -87,8 +76,31 @@
                                                                                                         <input
                                                                                                             type="text"
                                                                                                             class="form-control"
-                                                                                                            id="exampleInputuname_1"
-                                                                                                            placeholder="willard bryant">
+                                                                                                            id="firstName"
+                                                                                                            name="firstName"
+                                                                                                            placeholder="willard bryant"
+                                                                                                            value="{{ Auth::user()->FirstName }}">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <label
+                                                                                                        class="control-label mb-10"
+                                                                                                        for="exampleInputuname_1">Last
+                                                                                                        Name</label>
+                                                                                                    <div
+                                                                                                        class="input-group">
+                                                                                                        <div
+                                                                                                            class="input-group-addon">
+                                                                                                            <i
+                                                                                                                class="icon-user"></i>
+                                                                                                        </div>
+                                                                                                        <input
+                                                                                                            type="text"
+                                                                                                            class="form-control"
+                                                                                                            id="lastName"
+                                                                                                            name="lastName"
+                                                                                                            placeholder="willard bryant"
+                                                                                                            value="{{ Auth::user()->LastName }}">
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="form-group">
@@ -106,8 +118,10 @@
                                                                                                         <input
                                                                                                             type="email"
                                                                                                             class="form-control"
-                                                                                                            id="exampleInputEmail_1"
-                                                                                                            placeholder="xyz@gmail.com">
+                                                                                                            id="email"
+                                                                                                            name="email"
+                                                                                                            placeholder="xyz@gmail.com"
+                                                                                                            value="{{ Auth::user()->email }}">
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="form-group">
@@ -123,83 +137,32 @@
                                                                                                                 class="icon-phone"></i>
                                                                                                         </div>
                                                                                                         <input
-                                                                                                            type="email"
+                                                                                                            type="text"
                                                                                                             class="form-control"
-                                                                                                            id="exampleInputContact_1"
-                                                                                                            placeholder="+102 9388333">
+                                                                                                            id="contact_number"
+                                                                                                            placeholder="+102 9388333"
+                                                                                                            name="contract_number"
+                                                                                                            value="{{ Auth::user()->phone }}">
                                                                                                     </div>
                                                                                                 </div>
+
+
                                                                                                 <div class="form-group">
                                                                                                     <label
-                                                                                                        class="control-label mb-10"
-                                                                                                        for="exampleInputpwd_1">Password</label>
-                                                                                                    <div
-                                                                                                        class="input-group">
-                                                                                                        <div
-                                                                                                            class="input-group-addon">
-                                                                                                            <i
-                                                                                                                class="icon-lock"></i>
-                                                                                                        </div>
-                                                                                                        <input
-                                                                                                            type="password"
-                                                                                                            class="form-control"
-                                                                                                            id="exampleInputpwd_1"
-                                                                                                            placeholder="Enter pwd"
-                                                                                                            value="password">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group">
-                                                                                                    <label
-                                                                                                        class="control-label mb-10">Gender</label>
-                                                                                                    <div>
-                                                                                                        <div
-                                                                                                            class="radio">
-                                                                                                            <input
-                                                                                                                type="radio"
-                                                                                                                name="radio1"
-                                                                                                                id="radio_1"
-                                                                                                                value="option1"
-                                                                                                                checked="">
-                                                                                                            <label
-                                                                                                                for="radio_1">
-                                                                                                                M
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                        <div
-                                                                                                            class="radio">
-                                                                                                            <input
-                                                                                                                type="radio"
-                                                                                                                name="radio1"
-                                                                                                                id="radio_2"
-                                                                                                                value="option2">
-                                                                                                            <label
-                                                                                                                for="radio_2">
-                                                                                                                F
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group">
-                                                                                                    <label
-                                                                                                        class="control-label mb-10">Country</label>
+                                                                                                        class="control-label mb-10">Currency
+                                                                                                        Preferences</label>
                                                                                                     <select
                                                                                                         class="form-control"
                                                                                                         data-placeholder="Choose a Category"
-                                                                                                        tabindex="1">
-                                                                                                        <option
-                                                                                                            value="Category 1">
-                                                                                                            USA</option>
-                                                                                                        <option
-                                                                                                            value="Category 2">
-                                                                                                            Austrailia
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="Category 3">
-                                                                                                            India
-                                                                                                        </option>
-                                                                                                        <option
-                                                                                                            value="Category 4">
-                                                                                                            UK</option>
+                                                                                                        tabindex="1"
+                                                                                                        name="currencyPref">
+                                                                                                        @foreach ($currencies as $currency)
+                                                                                                            <option
+                                                                                                                value="{{ $currency->base }}"
+                                                                                                                {{ $currency->base === Auth::user()->CurrencyPref }}>
+                                                                                                                {{ $currency->base }}
+                                                                                                            </option>
+                                                                                                        @endforeach
                                                                                                     </select>
                                                                                                 </div>
                                                                                             </div>

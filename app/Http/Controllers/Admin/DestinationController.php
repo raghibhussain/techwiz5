@@ -4,14 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Destinations;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DestinationController extends Controller
 {
     public function getAddDestinationPage()
     {
+        $users = User::all();
         return view('Pages.Admin.Destinations.Add', [
-            'title' => 'Add Destination'
+            'title' => 'Add Destination',
+            'users' => $users
         ]);
     }
 
@@ -28,6 +31,7 @@ class DestinationController extends Controller
                 'destinationImage1' => 'required|mimes:png,jpg,jpeg',
                 'destinationImage2' => 'required|mimes:png,jpg,jpeg',
                 'destinationImage3' => 'required|mimes:png,jpg,jpeg',
+                'user_id' => 'required'
             ],
             [
                 'DestinationName.required' => 'Please Enter Destination Name',
@@ -44,6 +48,7 @@ class DestinationController extends Controller
                 'destinationImage2.mimes' => 'Only Png, JPG And JPEG format is allowed',
                 'destinationImage3.required' => 'Destination Image is required',
                 'destinationImage3.mimes' => 'Only Png, JPG And JPEG format is allowed',
+                'user_id.required' => 'User ID is required',
             ]
         );
 
@@ -87,12 +92,14 @@ class DestinationController extends Controller
         $destination->image2 = $imagePaths['image2'];
         $destination->image3 = $imagePaths['image3'];
         $destination->image4 = $imagePaths['image4'];
+        $destination->user_id = $req->input('user_id');
         $destination->save();
 
         return redirect()->route('Admin.Destination')->with('success', 'Destination added successfully!');
     }
 
-    public function getDestinationPage(){
+    public function getDestinationPage()
+    {
         $destinations = Destinations::all();
         return view('pages.Admin.Destinations.All', [
             'title' => 'All Destinations',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\activity_accomodation;
+use App\Models\currencyExchange;
 use App\Models\Destinations;
 use App\Models\Flights;
 use App\Models\Trips;
@@ -15,11 +16,13 @@ class TripController extends Controller
     public function getTipAddPage()
     {
         $destinations = Destinations::select('id', 'name')->get();
+        $currency = currencyExchange::select('base')->distinct()->get();
 
 
         return view('pages.Trips.add', [
             'title' => 'Add Trip',
-            'destinations' => $destinations
+            'destinations' => $destinations,
+            'currency' => $currency
         ]);
     }
 
@@ -119,7 +122,7 @@ class TripController extends Controller
     {
         $trip = Trips::where('id', $id)->with('trip_destination', 'accomodations', 'trip_flights')->first();
 
-       
+
 
         $destinations = Destinations::all();
         return view('pages.Trips.edit', [

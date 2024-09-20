@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\currencyExchange;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -81,8 +82,26 @@ class AuthController extends Controller
 
     public function getProfilePage()
     {
+        $currency = currencyExchange::select('base')->distinct()->get();
+
         return view('pages.profile', [
-            'title' => 'Profile'
+            'title' => 'Profile',
+            'currencies' => $currency
         ]);
+    }
+
+    public function UpdateUserProfile(Request $request)
+    {
+        $user = User::where('id', Auth::user()->id)->first();
+
+        $user->update([
+            'FirstName' => $request->input('firstName'),
+            'LastName' => $request->input('lastName'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('contract_number'),
+            'currency_preference' => $request->input('currencyPref'),
+        ]);
+
+        return back()->with(['Success' => 'Profile Updated Successfully']);
     }
 }
