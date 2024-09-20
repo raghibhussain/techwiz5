@@ -6,6 +6,7 @@ use App\Models\activity_accomodation;
 use App\Models\Trips;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseController extends Controller
 {
@@ -24,8 +25,11 @@ class ExpenseController extends Controller
         $ExpenseData = activity_accomodation::where('user_id', Auth::user()->id)->get();
 
         $categorySpecificExpenceData = activity_accomodation::where('user_id', Auth::user()->id)
-            ->select('type', 'Amount')
+            ->select('type', DB::raw('SUM(Amount) as total_amount'))
+            ->groupBy('type')
             ->get();
+
+
 
         $TripsExpense = Trips::where('user_id', Auth::user()->id)
             ->select(['budget', 'tripName'])
@@ -59,11 +63,12 @@ class ExpenseController extends Controller
 
     public function logExpenses(Request $req)
     {
+
         $validate = $req->validate(
             [
-                'tripe_id' => 'required|integer',
+                'trip_id' => 'required|string',
                 "category" => 'required|string',
-                'Amount' => 'required|integer',
+                'Amount' => 'required|string',
                 'ExpesnseNote' => 'required|string'
             ],
             [
@@ -73,5 +78,15 @@ class ExpenseController extends Controller
                 'ExpesnseNote.required' => 'Please Enter Expense Note'
             ]
         );
+
+        $expense = new activity_accomodation;
+        $expense->type = $validate['category'];
+        $expense->user_id = Auth::user()->id;
+        $expense->trip_id = $validate['trip_id'];
+        $expense->Amount = $validate['Amount'];
+        $expense->AccomodationOrActivity = $validate['ExpesnseNote'];
+        $expense->save();
+
+        return redirect()->route('pages.expense')->with(['success' => 'Expense Logged Successfully']);
     }
 }

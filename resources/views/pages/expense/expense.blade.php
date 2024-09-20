@@ -185,7 +185,7 @@
                                                             <td><span
                                                                     class="txt-dark weight-500">{{ $expense->type }}</span>
                                                             </td>
-                                                            <td>{{ $expense->Amount }}</td>
+                                                            <td>{{ $expense->total_amount }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

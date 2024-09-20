@@ -112,133 +112,31 @@
                                     <h6 class="txt-dark flex flex-middle  capitalize-font"><i
                                             class="font-20 txt-grey zmdi zmdi-airplane mr-10"></i>Flights
                                     </h6>
-                                    <hr class="light-grey-hr" />
 
-                                    @php
-                                        $FlightData = json_decode(old('FlightDetails'), true);
-                                        $selectedAirline = [];
-                                        $selectedDepartureAirport = [];
-
-                                        if ($FlightData) {
-                                            foreach ($FlightData as $flight) {
-                                                $selectedAirline[] = $flight['airline'];
-                                                $selectedDepartureAirport[] = $flight['departureAirport'];
-                                            }
-                                        }
-                                    @endphp
 
                                     <input type="hidden" name="FlightDetails" id="flightDetailsArray">
-                                    @if ($FlightData)
-                                        @foreach ($FlightData as $index => $flight)
-                                            <div class="row FlightsAndAirplane">
+                                    @php
+                                        $Airlines = [];
+                                        $DepartureAirports = [];
+                                    @endphp
 
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="flight_number" class="control-label mb-10">Flight
-                                                            Number</label>
-                                                        <input type="text" class="form-control flight_number"
-                                                            name="flight_number[{{ $index }}]"
-                                                            id="flight_number_{{ $index }}"
-                                                            value="{{ $flight['flightNumber'] }}">
-                                                        @if (empty($flight['flightNumber']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
+                                    @foreach ($trip->trip_flights as $flight)
+                                        @php
+                                            $Airlines[] = $flight->airline;
+                                            $DepartureAirports[] = $flight->departureairport;
+                                        @endphp
+                                    @endforeach
+                                    @foreach ($trip->trip_flights as $trip)
+                                        <hr class="light-grey-hr" />
 
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label for="Airline" class="control-label mb-10">Airline</label>
-                                                        <select class="form-control form-select Airline"
-                                                            name="Airline[{{ $index }}]"
-                                                            id="Airline_{{ $index }}">
-                                                            <option value="">Select Airline</option>
-                                                            @foreach ($selectedAirline as $airline)
-                                                                <option value="{{ $airline }}"
-                                                                    {{ $flight['airline'] == $airline ? 'selected' : '' }}>
-                                                                    {{ $airline }}
-                                                                </option>
-                                                            @endforeach
-                                                            <option value="new">Add New Airline</option>
-                                                        </select>
-                                                        @if (empty($flight['airline']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Departure Date & Time</label>
-                                                        <input type="datetime-local"
-                                                            class="form-control DepartureDateAndTime"
-                                                            name="DepartureDateAndTime[{{ $index }}]"
-                                                            id="DepartureDateAndTime_{{ $index }}"
-                                                            value="{{ $flight['departureDateAndTime'] }}">
-                                                        @if (empty($flight['departureDateAndTime']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Arrival Date & Time</label>
-                                                        <input type="datetime-local"
-                                                            class="form-control ArrivalDateAndTimes"
-                                                            name="ArrivalDateAndTimes[{{ $index }}]"
-                                                            id="ArrivalDateAndTimes_{{ $index }}"
-                                                            value="{{ $flight['arrivalDateAndTimes'] }}">
-                                                        @if (empty($flight['arrivalDateAndTimes']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Departure Airport</label>
-                                                        <select class="form-control form-select DepartureAirport"
-                                                            name="DepartureAirport[{{ $index }}]"
-                                                            id="DepartureAirport_{{ $index }}">
-                                                            <option value="">Select Your Airport</option>
-                                                            @foreach ($selectedDepartureAirport as $airport)
-                                                                <option value="{{ $airport }}"
-                                                                    {{ $flight['departureAirport'] == $airport ? 'selected' : '' }}>
-                                                                    {{ $airport }}
-                                                                </option>
-                                                            @endforeach
-                                                            <option value="new">Add New Airport</option>
-                                                        </select>
-                                                        @if (empty($flight['departureAirport']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Duration</label>
-                                                        <input type="number" class="form-control flightDuration"
-                                                            name="flightDuration[{{ $index }}]"
-                                                            id="flightDuration_{{ $index }}"
-                                                            value="{{ $flight['flightDuration'] }}">
-                                                        @if (empty($flight['flightDuration']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <div class="row FlightsAndAirplane" {!! old('FlightDetails') ? 'style="display: none;"' : '' !!}>
+                                        <div class="row FlightsAndAirplane">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="flight_number " class="control-label mb-10">Flight
                                                         Number</label>
                                                     <input type="text" class="form-control flight_number"
-                                                        name="flight_number" id="flight_number">
+                                                        name="flight_number" id="flight_number"
+                                                        value="{{ $trip->flightnumber }}">
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -247,6 +145,11 @@
                                                     <select class="form-control form-select Airline" name="Airline"
                                                         id="Airline">
                                                         <option value="">Select Airline</option>
+                                                        @foreach ($Airlines as $airline)
+                                                            <option {{ $airline == $trip->airline ? 'selected' : null }}
+                                                                value="{{ $airline }}">{{ $airline }}
+                                                            </option>
+                                                        @endforeach
                                                         <option value="new">Add New Airline</option>
                                                     </select>
                                                 </div>
@@ -255,14 +158,16 @@
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Departure Date & Time</label>
                                                     <input type="datetime-local" class="form-control DepartureDateAndTime"
-                                                        name="DepartureDateAndTime" id="DepartureDateAndTime" />
+                                                        name="DepartureDateAndTime" id="DepartureDateAndTime"
+                                                        value="{{ $trip->departuredateandtime }}" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Arrival Date & Time:</label>
                                                     <input type="datetime-local" class="form-control ArrivalDateAndTimes"
-                                                        name="ArrivalDateAndTimes" id="ArrivalDateAndTimes" />
+                                                        name="ArrivalDateAndTimes" id="ArrivalDateAndTimes"
+                                                        value="{{ $trip->arrivaldateandtime }}" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
@@ -271,6 +176,12 @@
                                                     <select class="form-control form-select DepartureAirport"
                                                         name="DepartureAirport" id="DepartureAirport">
                                                         <option value="">Select Your Airport</option>
+                                                        @foreach ($DepartureAirports as $Airport)
+                                                            <option
+                                                                {{ $Airport === $trip->departureairport ? 'selected' : null }}
+                                                                value="{{ $Airport }}">{{ $Airport }}
+                                                            </option>
+                                                        @endforeach
                                                         <option value="new">Add New Airport</option>
                                                     </select>
                                                 </div>
@@ -279,11 +190,14 @@
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Duration:</label>
                                                     <input type="number" class="form-control flightDuration"
-                                                        name="flightDuration" id="flightDuration" />
+                                                        name="flightDuration" id="flightDuration"
+                                                        value="{{ $trip->flightduration }}" />
                                                 </div>
                                             </div>
                                         </div>
-                                    @endif
+                                    @endforeach
+
+
 
                                     {{-- Add Another Flights --}}
                                     <div class="row" id="addAnotherFlightDiv">
@@ -309,102 +223,35 @@
                                     <input type="hidden" id="AccomodationAndActivity" name="AccomodationAndActivity">
 
 
-                                    @if (old('AccomodationAndActivity'))
-                                        @php
-                                            $AccomodationAndActivityData = json_decode(
-                                                old('AccomodationAndActivity'),
-                                                true,
-                                            );
-                                            $AccomodationType = [];
 
-                                            if ($AccomodationAndActivityData) {
-                                                foreach ($AccomodationAndActivityData as $accomodation) {
-                                                    $AccomodationType[] = $accomodation['Type'];
-                                                }
-                                            }
-                                        @endphp
-
-
-                                        @foreach ($AccomodationAndActivityData as $index => $accomodation)
-                                            <div class="row AccomodationAndActivity">
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Type</label>
-                                                        <select class="form-control form-select typeAcNew"
-                                                            name="typeAc[{{ $index }}]"
-                                                            id="typeAc_{{ $index }}">
-                                                            <option value="">Select Type</option>
-                                                            @foreach ($AccomodationType as $type)
-                                                                <option value="{{ $type }}"
-                                                                    {{ $accomodation['Type'] == $type ? 'selected' : '' }}>
-                                                                    {{ $type }}
-                                                                </option>
-                                                            @endforeach
-                                                            <option value="new">Add New</option>
-                                                        </select>
-                                                        @if (empty($accomodation['Type']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Accommodation or
-                                                            Activity:</label>
-                                                        <input type="text" class="form-control AccomodationOrActivity"
-                                                            name="AccomodationOrActivity[{{ $index }}]"
-                                                            id="AccomodationOrActivity_{{ $index }}"
-                                                            value="{{ $accomodation['AccomodationOrActivity'] }}">
-                                                        @if (empty($accomodation['AccomodationOrActivity']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-4">
-                                                    <div class="form-group">
-                                                        <label class="control-label mb-10">Amount</label>
-                                                        <input type="number" class="form-control AccomodationAmount"
-                                                            name="AccomodationAmount[{{ $index }}]"
-                                                            id="AccomodationAmount_{{ $index }}"
-                                                            value="{{ $accomodation['AccomodationAmount'] }}">
-                                                        @if (empty($accomodation['AccomodationAmount']))
-                                                            <span class="text-danger">This field is required.</span>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @else
-                                        <div class="row AccomodationAndActivity">
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label class="control-label mb-10">Type</label>
-                                                    <select class="form-control form-select typeAcNew" name="typeAc"
-                                                        id="typeAc">
-                                                        <option value="">Select Type</option>
-                                                        <option value="new">Add New</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label class="control-label mb-10">Accomodation Or
-                                                        Activity:</label>
-                                                    <input type="text" class="form-control AccomodationOrActivity"
-                                                        name="AccomodationOrActivity" id="AccomodationOrActivity" />
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label class="control-label mb-10">Amount</label>
-                                                    <input type="number" class="form-control AccomodationAmount"
-                                                        name="AccomodationAmount" id="AccomodationAmount" />
-                                                </div>
+                                    <div class="row AccomodationAndActivity">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="control-label mb-10">Type</label>
+                                                <select class="form-control form-select typeAcNew" name="typeAc"
+                                                    id="typeAc">
+                                                    <option value="">Select Type</option>
+                                                    <option value="new">Add New</option>
+                                                </select>
                                             </div>
                                         </div>
-                                    @endif
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="control-label mb-10">Accomodation Or
+                                                    Activity:</label>
+                                                <input type="text" class="form-control AccomodationOrActivity"
+                                                    name="AccomodationOrActivity" id="AccomodationOrActivity" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="control-label mb-10">Amount</label>
+                                                <input type="number" class="form-control AccomodationAmount"
+                                                    name="AccomodationAmount" id="AccomodationAmount" />
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="row" id=AddAnotherAccomodationsDiv>
                                         <div class="col-sm-6">
@@ -573,14 +420,14 @@
                                 </div>
                             </div>`;
 
-                // Append the new set of fields
+
                 $('#AddAnotherAccomodationsDiv').before(html);
             });
 
 
-            // Function to calculate the total amount and check against the allocated budget
+
             function calculateTotal() {
-                let AllocatedBudget = parseFloat($('#Budget').val()) || 0; // Get the allocated budget
+                let AllocatedBudget = parseFloat($('#Budget').val()) || 0;
                 let total = 0;
 
                 console.log(AllocatedBudget);

@@ -18,4 +18,14 @@ class Trips extends Model
     {
         return $this->hasMany(activity_accomodation::class, 'trip_id');
     }
+
+    public function trip_flights()
+    {
+        return $this->hasMany(Flights::class, 'tripe_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

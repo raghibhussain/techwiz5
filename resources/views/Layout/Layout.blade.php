@@ -244,7 +244,8 @@
         </nav>
         <!-- /Top Menu Items -->
 
-        <x-usernavbar></x-usernavbar>
+        {{-- <x-usernavbar></x-usernavbar> --}}
+        <x-admin-navbar></x-admin-navbar>
 
 
         <!-- Main Content -->

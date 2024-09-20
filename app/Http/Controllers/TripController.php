@@ -71,6 +71,7 @@ class TripController extends Controller
         $trip->endDate = $validate['EndDate'];
         $trip->budget = $validate['Budget'];
         $trip->currency = $validate['currency'];
+        $trip->status = 0;
         $trip->save();
 
         foreach ($flightDetails as $flight) {
@@ -116,7 +117,10 @@ class TripController extends Controller
 
     public function getTripEditPage(Request $req, $id)
     {
-        $trip = Trips::where('id', $id)->with('trip_destination', 'accomodations')->first();
+        $trip = Trips::where('id', $id)->with('trip_destination', 'accomodations', 'trip_flights')->first();
+
+       
+
         $destinations = Destinations::all();
         return view('pages.Trips.edit', [
             'title' => 'Edit - ' . $trip->tripName,

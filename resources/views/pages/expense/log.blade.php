@@ -25,6 +25,15 @@
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body pt-0">
                             <div class="form-wrap">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <form action="{{ route('Expense.Log') }}" method="POST">
                                     @csrf
                                     <h6 class="txt-dark flex flex-middle  capitalize-font"><i
@@ -38,6 +47,9 @@
                                                 <input type="hidden" name="trip_id" value="{{ $openTrip->id }}">
                                                 <input type="text" readonly class="form-control"
                                                     value="{{ $openTrip->tripName }}">
+                                                @error('trip_id')
+                                                    <span>{{ $message }}</span>
+                                                @enderror
                                             </div>
 
                                             <div class="form-group">
