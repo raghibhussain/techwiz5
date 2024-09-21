@@ -84,8 +84,9 @@
                     <div class="nav-header pull-left">
                         <div class="logo-wrap">
                             <a href="{{ route('pages.dashboard') }}">
-                                <img class="brand-img" src="../img/logo.png" alt="brand" />
-                                <span class="brand-text"><img src="../img/brand.png" alt="brand" /></span>
+                                <img class="brand-img" src="{{ asset('img/expensevoygaye.png') }}" alt="brand" />
+                                <span class="brand-text"><img src="{{ asset('img/expensevoygaye.png') }}"
+                                        style="width: 100px; margin-top: -14px;" alt="brand" /></span>
                             </a>
                         </div>
                     </div>
@@ -195,8 +196,8 @@
         </nav>
         <!-- /Top Menu Items -->
 
-        {{-- <x-usernavbar></x-usernavbar> --}}
-        <x-admin-navbar></x-admin-navbar>
+        <x-usernavbar></x-usernavbar>
+        {{-- <x-admin-navbar></x-admin-navbar> --}}
 
 
         <!-- Main Content -->

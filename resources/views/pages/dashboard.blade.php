@@ -144,44 +144,48 @@
             <div class="col-sm-8">
                 <div class="row">
                     <div class="col-sm-12 col-xs-12">
-                        <h3 class="mt-20 mb-20">Your Active Trip</h3>
-                        <div class=" activetrip">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h4 class="boldheading">{{ $activeTrip->tripName }}</h4>
-                                    <p class="text-light bold mt-5">Destination: <span
-                                            class="thin">{{ $activeTrip->trip_destination->name }}</span>
-                                    </p>
-                                    <p class="text-light bold">Start Date: <span
-                                            class="thin">{{ $activeTrip->startDate->format('y-m-d') }}</span></p>
-                                    <p class="text-light bold">End Date: <span
-                                            class="thin">{{ $activeTrip->endDate->format('y-m-d') }}</span></p>
-                                    <p class="text-light bold">Status: <span
-                                            class="thin">{{ $activeTrip->status == 1 ? 'Active' : 'Completed' }}</span>
-                                    </p>
-
-                                    <h5 class="boldheading">Itinerary Items & Activities</h5>
-                                    @for ($i = 0; $i < 4 && $i < count($activeTrip->accomodations); $i++)
-                                        <p class="text-light bold mt-5">{{ $activeTrip->accomodations[$i]->type }}:
-                                            <span
-                                                class="thin">{{ $activeTrip->accomodations[$i]->AccomodationOrActivity }}</span>
-                                        </p>
-                                    @endfor
-                                </div>
-
-                                <div class="col-sm-6 p-0">
-                                    <img src="{{ $activeTrip->trip_destination->image }}" style="width: 100%"
-                                        alt="">
-                                </div>
+                        @if ($activeTrip)
+                            <h3 class="mt-20 mb-20">Your Active Trip</h3>
+                            <div class=" activetrip">
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        <a class="btn btn-default viewbtn"
-                                            href="{{ route('Pages.TripeDetails', ['id' => $activeTrip->id]) }}">View
-                                            Details</a>
+                                    <div class="col-sm-6">
+                                        <h4 class="boldheading">{{ $activeTrip->tripName }}</h4>
+                                        <p class="text-light bold mt-5">Destination: <span
+                                                class="thin">{{ $activeTrip->trip_destination->name }}</span>
+                                        </p>
+                                        <p class="text-light bold">Start Date: <span
+                                                class="thin">{{ $activeTrip->startDate->format('y-m-d') }}</span></p>
+                                        <p class="text-light bold">End Date: <span
+                                                class="thin">{{ $activeTrip->endDate->format('y-m-d') }}</span></p>
+                                        <p class="text-light bold">Status: <span
+                                                class="thin">{{ $activeTrip->status == 1 ? 'Active' : 'Completed' }}</span>
+                                        </p>
+
+                                        <h5 class="boldheading">Itinerary Items & Activities</h5>
+                                        @for ($i = 0; $i < 4 && $i < count($activeTrip->accomodations); $i++)
+                                            <p class="text-light bold mt-5">{{ $activeTrip->accomodations[$i]->type }}:
+                                                <span
+                                                    class="thin">{{ $activeTrip->accomodations[$i]->AccomodationOrActivity }}</span>
+                                            </p>
+                                        @endfor
+                                    </div>
+
+                                    <div class="col-sm-6 p-0">
+                                        <img src="{{ $activeTrip->trip_destination->image }}" style="width: 100%"
+                                            alt="">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-default viewbtn"
+                                                href="{{ route('Pages.TripeDetails', ['id' => $activeTrip->id]) }}">View
+                                                Details</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <h3 class="mt-20 mb-20">You Don't Have Any Active Trips</h3>
+                        @endif
 
 
                         <div class="col-12 mt-30 mb-20">

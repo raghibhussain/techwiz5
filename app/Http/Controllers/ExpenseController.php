@@ -26,8 +26,15 @@ class ExpenseController extends Controller
         }
         $ExpenseData = activity_accomodation::where('user_id', Auth::user()->id)->get();
 
-        $currencyExchangeRate = currencyExchange::where('base', $ExpenseData[0]->currency)->where('conversion', Auth::user()->currency_preference)->first();
-
+        if ($ExpenseData) {
+            $currencyExchangeRate = currencyExchange::where('base', $ExpenseData[0]->currency)->where('conversion', Auth::user()->currency_preference)->first();
+        } else {
+            $currencyExchangeRate = new \stdClass();
+            $currencyExchangeRate->base = "PKR";
+            $currencyExchangeRate->conversion = "PKR";
+            $currencyExchangeRate->rate = 1;
+            $currencyExchangeRate->symbol = "Rs";
+        }
         $categorySpecificExpenceData = activity_accomodation::where('user_id', Auth::user()->id)
             ->select('type', DB::raw('SUM(Amount) as total_amount'))
             ->groupBy('type')

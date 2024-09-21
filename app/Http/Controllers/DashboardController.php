@@ -18,7 +18,16 @@ class DashboardController extends Controller
         $OverallAllocationBudget = Trips::where('user_id', Auth::user()->id)->sum('budget');
         $baseCurrency = Trips::where('user_id', Auth::user()->id)->select('currency')->first();
 
-        $exchange = currencyExchange::where('base', $baseCurrency->currency)->where('conversion', Auth::user()->currency_preference)->first();
+        if ($baseCurrency) {
+            $exchange = currencyExchange::where('base', $baseCurrency->currency)->where('conversion', Auth::user()->currency_preference)->first();
+        } else {
+            $exchange = new \stdClass();
+            $exchange->base = "PKR";
+            $exchange->conversion = "PKR";
+            $exchange->rate = 1;
+            $exchange->symbol = "Rs";
+        }
+
 
         $trips = Trips::where('user_id', Auth::user()->id)
             ->orderBy('startDate', 'desc')
