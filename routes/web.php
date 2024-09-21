@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\DestinationController;
 use App\Http\Controllers\Admin\ExchangeController;
 use App\Http\Controllers\Admin\TripController as AdminTripController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\DestinationController as UserDestinationController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -50,17 +52,24 @@ Route::prefix('/')->group(function () {
     Route::prefix('destination')->group(function () {
         Route::get('all', [UserDestinationController::class, 'getDestinationPage'])->name('Pages.Destination');
         Route::get('add', [UserDestinationController::class, 'getAddDesitnationPage'])->name('Pages.AddDestination');
+        Route::get('edit/{id}', [UserDestinationController::class, 'GetUserDetinationEditPage'])->name('Pages.EditDestination');
+        Route::get('view/{id}', [UserDestinationController::class, 'GetUserDetinationViewPage'])->name('Pages.ViewDestination');
     });
 
     Route::get('profile', [AuthController::class, 'getProfilePage'])->name('Auth.Profile');
 
     Route::get('notifications', [NotificationController::class, 'getNotificationPage'])->name('Auth.Notification');
+
+    Route::get('search', [SearchController::class, 'getSearchPage'])->name('Page.Search');
 });
 
 
 
 // Admin Routes
 Route::prefix('admin')->group(function () {
+
+    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('Admin.Dashboard');
+
     Route::prefix('destinations')->group(function () {
         Route::get('/', [DestinationController::class, 'getDestinationPage'])->name('Admin.Destination');
         Route::get('add', [DestinationController::class, 'getAddDestinationPage'])->name('Admin.Add.Destination');
@@ -112,6 +121,7 @@ Route::prefix('api/v1')->group(function () {
 
     Route::prefix('destination')->group(function () {
         Route::post('add', [UserDestinationController::class, 'AddDestination'])->name('Auth.Post.Add.Destination');
+        Route::post('update', [UserDestinationController::class, 'UpdateDestinationData'])->name('Auth.Post.Update.DestinationData');
     });
 
     Route::prefix('admin')->group(function () {

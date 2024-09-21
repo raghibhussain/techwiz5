@@ -13,7 +13,7 @@
 
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <link href="{{ asset('/dist/css/bootstrap.min.css') }}" />

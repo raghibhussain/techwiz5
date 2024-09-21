@@ -35,7 +35,6 @@
                                                         <th>Email</th>
                                                         <th>Phone</th>
                                                         <th>Currency</th>
-                                                        <th>Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -47,10 +46,6 @@
                                                             <td>{{ $user->email }}</td>
                                                             <td>{{ $user->phone }}</td>
                                                             <td>{{ $user->currency_preference }}</td>
-                                                            <td>
-                                                                <button class="btn btn-default">View</button>
-                                                                <button class="btn btn-orange">Edit</button>
-                                                            </td>
                                                         </tr>
                                                     @endforeach
 

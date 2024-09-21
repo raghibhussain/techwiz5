@@ -72,14 +72,14 @@
                                             <div class="form-group">
                                                 <label class="mb-10 control-label">Start Date</label>
                                                 <input type="date" name="startDate" class="form-control" id="startDate"
-                                                    value="{{ $trip->startDate }}" />
+                                                    value="{{ \Carbon\Carbon::parse($trip->startDate)->format('Y-m-d') }}" />
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="mb-10 control-label">End Date</label>
                                                 <input type="date" name="EndDate" class="form-control" id="EndDate"
-                                                    value="{{ $trip->endDate }}" />
+                                                    value="{{ \Carbon\Carbon::parse($trip->endDate)->format('Y-m-d') }}" />
                                             </div>
                                         </div>
                                     </div>
@@ -95,15 +95,11 @@
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Currency</label>
                                                 <select class="form-control" name="currency" tabindex="1">
-                                                    <option value="USD"
-                                                        value="{{ $trip->budget === 'USD' ? 'selected' : null }}">USD
-                                                    </option>
-                                                    <option value="GBP"
-                                                        value="{{ $trip->budget === 'GBP' ? 'selected' : null }}">GBP
-                                                    </option>
-                                                    <option value="Euro"
-                                                        value="{{ $trip->budget === 'Euro' ? 'selected' : null }}">
-                                                        Euro</option>
+                                                    @foreach ($currency as $cur)
+                                                        <option value="{{ $cur->base }}"
+                                                            {{ $cur->base === $trip->currency ? 'selected' : '' }}>
+                                                            {{ $cur->base }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -292,7 +288,7 @@
 
                                     <div class="form-actions">
                                         <button class="btn btn-orange btn-icon left-icon mr-10 pull-left" id="AddBtn">
-                                            <i class="fa fa-check"></i> <span>Add Trip</span></button>
+                                            <i class="fa fa-check"></i> <span>Update Trip</span></button>
                                         <button type="button" class="btn btn-default pull-left">Cancel</button>
                                         <div class="clearfix"></div>
                                     </div>
@@ -553,7 +549,7 @@
                     let AccomodationAmount = $(this).find('.AccomodationAmount').val();
 
                     AccomodationAndActivites.push({
-                        id: accomodation_id,
+                        id: id,
                         Type: type,
                         AccomodationOrActivity: AccomodationOrActivity,
                         AccomodationAmount: AccomodationAmount
@@ -568,6 +564,7 @@
 
 
             $('form').on('submit', function() {
+
                 gatherAccomodationAndActivities();
                 getAllFlightDetails();
             })

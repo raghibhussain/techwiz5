@@ -2,11 +2,23 @@
 @section('main-content')
     <style>
         .activetrip {
-            background-color: orangered;
-            padding: 30px;
+            background-color: #ff6028;
+            padding: 20px;
             margin-top: 5px;
             margin-bottom: 10px;
             border-radius: 12px;
+            width: 100%;
+        }
+
+        .activetrip p {
+            font-size: 13px;
+            letter-spacing: 1px
+        }
+
+        h4 {
+            text-transform: uppercase;
+            font-size: 22px;
+            margin-top: 5px;
         }
 
         .boldheading {
@@ -34,6 +46,11 @@
             width: 100%;
         }
 
+        .card {
+            padding-left: 12px;
+            margin-top: 15px;
+        }
+
         .cards {
             border-radius: 8px;
         }
@@ -44,7 +61,7 @@
         <!-- Row -->
 
 
-        <div class="row mt-20">
+        <div class="card row mt-20">
             <div class="col-sm-4 col-xs-12">
                 <div class="panel panel-default card-view pa-0">
                     <div class="panel-wrapper collapse in">
@@ -148,7 +165,7 @@
                             <h3 class="mt-20 mb-20">Your Active Trip</h3>
                             <div class=" activetrip">
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <h4 class="boldheading">{{ $activeTrip->tripName }}</h4>
                                         <p class="text-light bold mt-5">Destination: <span
                                                 class="thin">{{ $activeTrip->trip_destination->name }}</span>
@@ -170,7 +187,7 @@
                                         @endfor
                                     </div>
 
-                                    <div class="col-sm-6 p-0">
+                                    <div class="col-sm-8 p-0">
                                         <img src="{{ $activeTrip->trip_destination->image }}" style="width: 100%"
                                             alt="">
                                     </div>

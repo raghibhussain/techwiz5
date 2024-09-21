@@ -102,6 +102,93 @@ class DestinationController extends Controller
         $destination->user_id = Auth::user()->id;
         $destination->save();
 
-        return redirect()->route('Admin.Destination')->with('success', 'Destination added successfully!');
+        return redirect()->route('Pages.Destination')->with('success', 'Destination added successfully!');
+    }
+
+    public function GetUserDetinationEditPage($id)
+    {
+        $destination = Destinations::where('id', $id)->first();
+
+        return view('pages.Destination.Edit', [
+            'title' => 'Edit Destination',
+            'destination' => $destination
+        ]);
+    }
+
+    public function UpdateDestinationData(Request $req)
+    {
+        $validate = $req->validate(
+            [
+                'DestinationName' => 'required|string',
+                'destination_description' => 'required|string',
+                'destination_location' => 'required|string',
+                'destinationImage' => 'nullable|mimes:png,jpg,jpeg',
+                'destinationImage1' => 'nullable|mimes:png,jpg,jpeg',
+                'destinationImage2' => 'nullable|mimes:png,jpg,jpeg',
+                'destinationImage3' => 'nullable|mimes:png,jpg,jpeg',
+            ],
+            [
+                'DestinationName.required' => 'Please Enter Destination Name',
+                'DestinationName.string' => 'What are you tryin to do, You Silly Human? 🥺',
+                'destination_description.required' => 'Please Enter Destination Description',
+                'destination_description.string' => 'What are you tryin to do, You Silly Human? 🥺',
+                'destination_location.required' => 'Please Enter Destination Location ',
+                'destination_location.string' => 'What are you tryin to do, You Silly Human? 🥺',
+                'destinationImage.mimes' => 'Only Png, JPG And JPEG format is allowed',
+                'destinationImage1.mimes' => 'Only Png, JPG And JPEG format is allowed',
+                'destinationImage2.mimes' => 'Only Png, JPG And JPEG format is allowed',
+                'destinationImage3.mimes' => 'Only Png, JPG And JPEG format is allowed',
+            ]
+        );
+
+        $destination = Destinations::where('id', $req->input('destination_id'))->first();
+        $destination->name = $validate['DestinationName'];
+        $destination->description = $validate['destination_description'];
+        $destination->location = $validate['destination_location'];
+        // $destination->image = $validate['destinationImage'];
+
+        if ($req->hasFile('destinationImage')) {
+            $image = $req->file('destinationImage');
+            $imageName = 'image_' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/destinations'), $imageName);
+            $destination->image = 'uploads/destinations/' . $imageName;
+        }
+
+        if ($req->hasFile('destinationImage1')) {
+            $image = $req->file('destinationImage1');
+            $imageName = 'image2_' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/destinations'), $imageName);
+            $destination->image2 = 'uploads/destinations/' . $imageName;
+        }
+
+
+        if ($req->hasFile('destinationImage2')) {
+            $image = $req->file('destinationImage2');
+            $imageName = 'image3_' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/destinations'), $imageName);
+            $destination->image3  = 'uploads/destinations/' . $imageName;
+        }
+        if ($req->hasFile('destinationImage3')) {
+            $image = $req->file('destinationImage3');
+            $imageName = 'image4_' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/destinations'), $imageName);
+            $destination->image4 = 'uploads/destinations/' . $imageName;
+        }
+
+
+        $destination->user_id = Auth::user()->id;
+        $destination->save();
+
+        return redirect()->route('Pages.Destination')->with('success', 'Destination added successfully!');
+    }
+
+    public function GetUserDetinationViewPage($id)
+    {
+        $destination = Destinations::where('id', $id)->first();
+
+        return view('Pages.Destination.view', [
+            'title' => $destination->name . ' Destination',
+            'destination' => $destination
+        ]);
     }
 }
