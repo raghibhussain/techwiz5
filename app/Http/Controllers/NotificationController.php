@@ -15,4 +15,11 @@ class NotificationController extends Controller
 
         return response()->json(['success' => 'Notification Updated Successfully']);
     }
+
+    public function getNotificationPage()
+    {
+        return view('Pages.Notifications', [
+            'title' => 'All Notifications'
+        ]);
+    }
 }

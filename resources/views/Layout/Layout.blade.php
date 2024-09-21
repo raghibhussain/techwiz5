@@ -161,7 +161,8 @@
                                 <li>
                                     <div class="notification-box-bottom-wrap">
                                         <hr class="light-grey-hr ma-0" />
-                                        <a class="block text-center read-all" href="javascript:void(0)"> read all </a>
+                                        <a class="block text-center read-all"
+                                            href="{{ route('Auth.Notification') }}"> read all </a>
                                         <div class="clearfix"></div>
                                     </div>
                                 </li>
@@ -170,8 +171,9 @@
 
                         <li class="dropdown auth-drp">
                             <a href="#" class="dropdown-toggle pr-0" data-toggle="dropdown"><img
-                                    src="{{ Auth::user()->image_url }}" style="object-fit: cover;" alt="user_auth"
-                                    class="user-auth-img img-circle" /><span class="user-online-status"></span></a>
+                                    src="{{ asset(Auth::user()->image_url) }}" style="object-fit: cover;"
+                                    alt="user_auth" class="user-auth-img img-circle" /><span
+                                    class="user-online-status"></span></a>
                             <ul class="dropdown-menu user-auth-dropdown" data-dropdown-in="flipInX"
                                 data-dropdown-out="flipOutX">
                                 <li>

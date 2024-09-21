@@ -34,8 +34,9 @@
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body pt-0">
                             <div class="form-wrap">
-                                <form action="{{ route('Trip.Post.Add') }}" method="POST">
+                                <form action="{{ route('Trip.Post.Edit') }}" method="POST">
                                     @csrf
+                                    <input type="hidden" name="trip_id" value="{{ $trip->id }}">
                                     <h6 class="txt-dark flex flex-middle  capitalize-font"><i
                                             class="font-20 txt-grey zmdi zmdi-info-outline mr-10"></i>Trip Details
                                     </h6>
@@ -130,6 +131,7 @@
                                         <hr class="light-grey-hr" />
 
                                         <div class="row FlightsAndAirplane">
+                                            <input type="hidden" class="flight_id" value="{{ $trip->id }}">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label for="flight_number " class="control-label mb-10">Flight
@@ -222,35 +224,54 @@
                                     <hr class="light-grey-hr" />
                                     <input type="hidden" id="AccomodationAndActivity" name="AccomodationAndActivity">
 
+                                    @php
+                                        $typeArray = [];
+                                    @endphp
+                                    @foreach ($accomodations as $type)
+                                        @php
+                                            $typeArray[] = $type->type;
+                                        @endphp
+                                    @endforeach
+
+                                    @foreach ($accomodations as $item)
+                                        <div class="row AccomodationAndActivity">
+                                            <input type="hidden" class="accomodation_id" value="{{ $item->id }}">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="control-label mb-10">Type</label>
+                                                    <select class="form-control form-select typeAcNew" name="typeAc"
+                                                        id="typeAc">
+                                                        <option value="">Select Type</option>
+                                                        @foreach ($typeArray as $type)
+                                                            <option value="{{ $type }}"
+                                                                {{ $type === $item->type ? 'selected' : null }}>
+                                                                {{ $type }}</option>
+                                                        @endforeach
+                                                        <option value="new">Add New</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="control-label mb-10">Accomodation Or
+                                                        Activity:</label>
+                                                    <input type="text" class="form-control AccomodationOrActivity"
+                                                        name="AccomodationOrActivity" id="AccomodationOrActivity"
+                                                        value="{{ $item->AccomodationOrActivity }}" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="control-label mb-10">Amount</label>
+                                                    <input type="number" class="form-control AccomodationAmount"
+                                                        name="AccomodationAmount" id="AccomodationAmount"
+                                                        value="{{ $item->Amount }}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
 
 
-                                    <div class="row AccomodationAndActivity">
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="control-label mb-10">Type</label>
-                                                <select class="form-control form-select typeAcNew" name="typeAc"
-                                                    id="typeAc">
-                                                    <option value="">Select Type</option>
-                                                    <option value="new">Add New</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="control-label mb-10">Accomodation Or
-                                                    Activity:</label>
-                                                <input type="text" class="form-control AccomodationOrActivity"
-                                                    name="AccomodationOrActivity" id="AccomodationOrActivity" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="control-label mb-10">Amount</label>
-                                                <input type="number" class="form-control AccomodationAmount"
-                                                    name="AccomodationAmount" id="AccomodationAmount" />
-                                            </div>
-                                        </div>
-                                    </div>
 
 
                                     <div class="row" id=AddAnotherAccomodationsDiv>
@@ -497,6 +518,7 @@
 
                 $('.FlightsAndAirplane').each(function() {
 
+                    let flight_id = $(this).find('.flight_id').val();
                     let flightNumber = $(this).find('.flight_number').val();
                     let airline = $(this).find('.Airline').val();
                     let departureDateAndTime = $(this).find('.DepartureDateAndTime').val();
@@ -505,6 +527,7 @@
                     let flightDuration = $(this).find('.flightDuration').val();
 
                     allFlightDetails.push({
+                        id: flight_id,
                         flightNumber: flightNumber,
                         airline: airline,
                         departureDateAndTime: departureDateAndTime,
@@ -524,11 +547,13 @@
                 let AccomodationAndActivites = [];
 
                 $('.AccomodationAndActivity').each(function() {
+                    let id = $(this).find('.accomodation_id').val();
                     let type = $(this).find('.typeAcNew').val();
                     let AccomodationOrActivity = $(this).find('.AccomodationOrActivity').val();
                     let AccomodationAmount = $(this).find('.AccomodationAmount').val();
 
                     AccomodationAndActivites.push({
+                        id: accomodation_id,
                         Type: type,
                         AccomodationOrActivity: AccomodationOrActivity,
                         AccomodationAmount: AccomodationAmount

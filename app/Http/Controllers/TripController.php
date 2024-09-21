@@ -109,6 +109,7 @@ class TripController extends Controller
 
         $trips = Trips::where('user_id', Auth::user()->id)->with('trip_destination', 'accomodations')->get();
 
+
         $destinations = Destinations::all();
 
         return view('pages.Trips.trips', [
@@ -122,13 +123,14 @@ class TripController extends Controller
     {
         $trip = Trips::where('id', $id)->with('trip_destination', 'accomodations', 'trip_flights')->first();
 
-
+        $accomodations = $trip->accomodations;
 
         $destinations = Destinations::all();
         return view('pages.Trips.edit', [
             'title' => 'Edit - ' . $trip->tripName,
             'trip' => $trip,
-            'destinations' => $destinations
+            'destinations' => $destinations,
+            'accomodations' => $accomodations
         ]);
     }
 
@@ -148,5 +150,10 @@ class TripController extends Controller
             'trip' => $trip,
             'exchange' => $exchange
         ]);
+    }
+
+    public function EditTrip(Request $req)
+    {
+        return response()->json($req->all());
     }
 }

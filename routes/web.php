@@ -53,6 +53,8 @@ Route::prefix('/')->group(function () {
     });
 
     Route::get('profile', [AuthController::class, 'getProfilePage'])->name('Auth.Profile');
+
+    Route::get('notifications', [NotificationController::class, 'getNotificationPage'])->name('Auth.Notification');
 });
 
 
@@ -99,6 +101,7 @@ Route::prefix('api/v1')->group(function () {
 
     Route::prefix('trip')->group(function () {
         Route::post('add', [TripController::class, 'AddTrip'])->name('Trip.Post.Add');
+        Route::post('edit', [TripController::class, 'EditTrip'])->name('Trip.Post.Edit');
     });
 
     Route::prefix('expense')->group(function () {
