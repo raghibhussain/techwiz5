@@ -9,10 +9,26 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\DestinationController as UserDestinationController;
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('/', function () {
+    if (Auth::check()) {
+        if (Auth::user()->email === 'admin@example.com') {
+            return redirect('admin/dashboard');
+        } else {
+            return redirect()->route('pages.dashboard');
+        }
+    } else {
+        return redirect()->route('Auth.login');
+    }
+});
 
 Route::get('/login', [AuthController::class, 'getLoginPage'])->name('Auth.login');
 Route::get('/register', [AuthController::class, 'getRegisterPage'])->name('Auth.register');
+Route::get('logout', [AuthController::class, 'logoutUser'])->name('Auth.Logout');
 
 
 // User Routes
@@ -23,7 +39,7 @@ Route::prefix('/')->group(function () {
         Route::get('/', [TripController::class, 'getTripsPage'])->name('pages.trips');
         Route::get('add', [TripController::class, 'getTipAddPage'])->name('pages.add.trip');
         Route::get('edit/{id}', [TripController::class, 'getTripEditPage'])->name('page.edit.trip');
-        Route::get('trip', [TripController::class, 'getTripDetails'])->name('Pages.TripeDetails');
+        Route::get('trip/{id}', [TripController::class, 'getTripDetails'])->name('Pages.TripeDetails');
     });
 
     Route::prefix('expense')->group(function () {
@@ -73,6 +89,12 @@ Route::prefix('api/v1')->group(function () {
         Route::post('register', [AuthController::class, 'RegisterUser'])->name('Auth.Post.Register');
         Route::post('login', [AuthController::class, 'LoginUser'])->name('Auth.Post.Login');
         Route::post('update', [AuthController::class, 'UpdateUserProfile'])->name('Auth.Post.Update.Profile');
+        Route::post('upload-profile-picture', [AuthController::class, 'UploadProfilePicture'])->name('Auth.Post.UploadProfilePicture');
+        Route::post('upload-banner-image', [AuthController::class, 'UploadBannerImage'])->name('Auth.Post.UploadBannerImage');
+    });
+
+    Route::prefix('notification')->group(function () {
+        Route::post('notify', [NotificationController::class, 'NotificationReed'])->name('Notification.Post');
     });
 
     Route::prefix('trip')->group(function () {

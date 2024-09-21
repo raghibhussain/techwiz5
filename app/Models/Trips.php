@@ -9,6 +9,15 @@ class Trips extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'startDate' => 'datetime',
+        'endDate' => 'datetime',
+        'duration' => 'string',
+        'departuredateandtime' => 'string',
+        'arrivaldateandtime' => 'string',
+
+    ];
+
     public function trip_destination()
     {
         return $this->belongsTo(Destinations::class, 'destination');

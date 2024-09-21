@@ -109,7 +109,6 @@ class TripController extends Controller
 
         $trips = Trips::where('user_id', Auth::user()->id)->with('trip_destination', 'accomodations')->get();
 
-
         $destinations = Destinations::all();
 
         return view('pages.Trips.trips', [
@@ -130,6 +129,24 @@ class TripController extends Controller
             'title' => 'Edit - ' . $trip->tripName,
             'trip' => $trip,
             'destinations' => $destinations
+        ]);
+    }
+
+    public function getTripDetails($id)
+    {
+        $trip = Trips::with('trip_destination', 'accomodations', 'trip_flights')->where('id', $id)->where('user_id', Auth::id())->first();
+
+        if (!$trip) {
+            return redirect()->back()->with('error', 'There is no such Trip');
+        }
+
+        $exchange = currencyExchange::where('base', $trip->currency)->where('conversion', Auth::user()->currency_preference)->first();
+
+        // Return the trip details view
+        return view('pages.Trips.trip', [
+            'title' => 'Trip Details',
+            'trip' => $trip,
+            'exchange' => $exchange
         ]);
     }
 }

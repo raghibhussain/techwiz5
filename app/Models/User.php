@@ -22,6 +22,8 @@ class User extends Authenticatable
         'email',
         'phone',
         'currency_preference',
+        'image_url',
+        'banner_url'
     ];
 
     /**

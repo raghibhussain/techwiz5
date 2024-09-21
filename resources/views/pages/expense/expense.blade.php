@@ -117,7 +117,7 @@
                             </div>
                             <div class="panel-heading">
                                 <div class="pull-left">
-                                    <h6 class="panel-title txt-dark">user statistics</h6>
+                                    <h6 class="panel-title txt-dark">Expense statistics</h6>
                                 </div>
                                 <div class="pull-right">
                                     <a href="#" class="pull-left inline-block refresh mr-15">

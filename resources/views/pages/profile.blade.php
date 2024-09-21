@@ -2,29 +2,43 @@
 @section('main-content')
     <!-- Main Content -->
 
+    <style>
+        .profileContainer {
+            display: flex;
+            justify-content: center;
+        }
+
+        @media(max-width: 600px) {
+            .profileContainer {
+                display: block;
+            }
+        }
+    </style>
     <div class="container pt-30 ">
         <!-- Row -->
-        <div class="row " style="display: flex; justify-content:Center;">
-            <div class="col-sm-4">
+        <div class="row profileContainer">
+            <div class="col-md-4 col-sm-12">
                 <div class="row ">
                     <div class="col-sm-12">
                         <div class="panel panel-default card-view  pa-0">
                             <div class="panel-wrapper collapse in">
                                 <div class="panel-body  pa-0">
                                     <div class="profile-box">
-                                        <div class="profile-cover-pic">
+                                        <div class="profile-cover-pic"
+                                            style="background-image: url('{{ Auth::user()->banner_url }}')">
                                             <div class="fileupload btn btn-default">
                                                 <span class="btn-text">edit</span>
-                                                <input class="upload" type="file">
+                                                <input class="upload" id="bannerPicture" type="file">
                                             </div>
                                             <div class="profile-image-overlay"></div>
                                         </div>
                                         <div class="profile-info text-center mb-15">
                                             <div class="profile-img-wrap">
-                                                <img class="inline-block mb-10" src="../img/mock1.jpg" alt="user" />
+                                                <img class="inline-block mb-10" src="{{ Auth::user()->image_url }}"
+                                                    alt="user" style="object-fit: cover;" />
                                                 <div class="fileupload btn btn-default">
                                                     <span class="btn-text">edit</span>
-                                                    <input class="upload" type="file">
+                                                    <input class="upload" id="profilePicture" type="file">
                                                 </div>
                                             </div>
                                             <h5 class="block mt-10 weight-500 capitalize-font txt-dark">
@@ -202,4 +216,65 @@
             </div>
         </div>
     </div>
+@endsection
+@section('addition-scripts')
+    <script>
+        // Handle Profile Picture Upload
+        $('#profilePicture').on('change', function() {
+            var fileInput = $(this)[0];
+            var file = fileInput.files[0];
+
+            if (file) {
+                var formData = new FormData();
+                formData.append('profilePicture', file);
+
+                $.ajax({
+                    url: '{{ route('Auth.Post.UploadProfilePicture') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log('Profile picture updated successfully');
+                        window.location.reload(); // Refresh the page to reflect the new profile picture
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Error occurred while uploading:', error);
+                    }
+                });
+            }
+        });
+
+        // Handle Banner Picture Upload
+        $('#bannerPicture').on('change', function() {
+            var fileInput = $(this)[0];
+            var file = fileInput.files[0];
+
+            if (file) {
+                var formData = new FormData();
+                formData.append('bannerPicture', file);
+
+                $.ajax({
+                    url: '{{ route('Auth.Post.UploadBannerImage') }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        console.log('Banner picture updated successfully');
+                        window.location.reload(); // Refresh the page to reflect the new banner picture
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Error occurred while uploading:', error);
+                    }
+                });
+            }
+        });
+    </script>
 @endsection

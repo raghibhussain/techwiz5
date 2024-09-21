@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\currencyExchange;
+use App\Models\Notification;
+use App\Models\Trips;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -59,6 +61,7 @@ class AuthController extends Controller
         $User->email = $validate['email'];
         $User->phone = $validate['phone'];
         $User->password = bcrypt($validate['password']);
+        $User->currency_preference = 'PKR';
         $User->save();
 
         return redirect()->route('Auth.login')->with(['Success' => 'You Have Been Registered Successfully. Please Login.']);
@@ -74,6 +77,17 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $req->session()->regenerate();
 
+            if (Auth::user()->email != 'admin@admin.com') {
+                $hasTrips = Trips::where('user_id', Auth::user()->id)->exists();
+                
+                if ($hasTrips) {
+                    $notify = new Notification;
+                    $notify->user_id = Auth::user()->id;
+                    $notify->head = 'Remider';
+                    $notify->notification = 'Please Log Your Expense';
+                    $notify->save();
+                }
+            }
             return redirect()->route('pages.dashboard')->with(['success' => 'Login Success']);
         }
 
@@ -103,5 +117,68 @@ class AuthController extends Controller
         ]);
 
         return back()->with(['Success' => 'Profile Updated Successfully']);
+    }
+
+    public function UploadProfilePicture(Request $request)
+    {
+
+        $request->validate([
+            'profilePicture' => 'required|image'
+        ]);
+
+
+        $file = $request->file('profilePicture');
+
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+        $path = 'uploads/users/profile';
+
+        $file->move(public_path($path), $fileName);
+
+        $imageUrl = $path . '/' . $fileName;
+
+        $userId = Auth::user()->id;
+        User::where('id', $userId)->update(['image_url' => $imageUrl]);
+
+
+        return response()->json([
+            'success' => 'Profile picture uploaded successfully',
+            'image_url' => $imageUrl
+        ]);
+    }
+    public function UploadBannerImage(Request $request)
+    {
+
+        $request->validate([
+            'bannerPicture' => 'required|image'
+        ]);
+
+
+        $file = $request->file('bannerPicture');
+
+        $fileName = time() . '.' . $file->getClientOriginalExtension();
+
+        $path = 'uploads/users/banner';
+
+        $file->move(public_path($path), $fileName);
+
+        $imageUrl = $path . '/' . $fileName;
+
+        $userId = Auth::user()->id;
+        User::where('id', $userId)->update(['banner_url' => $imageUrl]);
+
+
+        return response()->json([
+            'success' => 'Profile picture uploaded successfully',
+            'image_url' => $imageUrl
+        ]);
+    }
+
+
+    public function logoutUser()
+    {
+        Auth::logout();
+
+        return redirect('/');
     }
 }

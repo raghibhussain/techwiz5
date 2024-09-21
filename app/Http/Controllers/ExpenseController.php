@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\activity_accomodation;
 use App\Models\currencyExchange;
+use App\Models\Notification;
 use App\Models\Trips;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,6 @@ class ExpenseController extends Controller
 
         $currencyExchangeRate = currencyExchange::where('base', $ExpenseData[0]->currency)->where('conversion', Auth::user()->currency_preference)->first();
 
-        return response()->json($ExpenseData);
         $categorySpecificExpenceData = activity_accomodation::where('user_id', Auth::user()->id)
             ->select('type', DB::raw('SUM(Amount) as total_amount'))
             ->groupBy('type')
@@ -40,6 +40,7 @@ class ExpenseController extends Controller
             ->get();
 
 
+        // return response()->json($currencyExchangeRate);
         // return response()->json($ExpenseData);
 
         return view('pages.expense.expense', [
@@ -92,6 +93,23 @@ class ExpenseController extends Controller
         $expense->AccomodationOrActivity = $validate['ExpesnseNote'];
         $expense->currency = Auth::user()->currency_preference;
         $expense->save();
+
+
+        $getTripAllocatedBudget = Trips::where('id', $validate['trip_id'])->value('budget');
+
+        $getTotalExpense =  activity_accomodation::where('trip_id', $validate['trip_id'])->select('Amount')->sum('Amount');
+
+        $remainingBudget = $getTripAllocatedBudget - $getTotalExpense;
+
+        $tenPercentOfBudget = 0.10 * $getTripAllocatedBudget;
+
+        if ($remainingBudget <= $tenPercentOfBudget) {
+            $notify = new Notification;
+            $notify->user_id = Auth::user()->id;
+            $notify->head = 'Budget Exceeding';
+            $notify->notification = 'You are about to hit limit of allocated budget';
+            $notify->save();
+        }
 
         return redirect()->route('pages.expense')->with(['success' => 'Expense Logged Successfully']);
     }

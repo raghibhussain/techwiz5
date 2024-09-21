@@ -40,11 +40,11 @@
     </style>
     <!-- Main Content -->
     <div class="container pt-30">
-        <h3>Hello username Welcome to ExpenseVoyage</h3>
+        <h3>Hello {{ Auth::user()->FirstName }},</h3>
         <!-- Row -->
 
 
-        <div class="row">
+        <div class="row mt-20">
             <div class="col-sm-4 col-xs-12">
                 <div class="panel panel-default card-view pa-0">
                     <div class="panel-wrapper collapse in">
@@ -53,10 +53,40 @@
 
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
+                                        <div class="col-xs-6 text-start ps-20 pr-0 data-wrap-left">
                                             <span class="txt-dark block counter"><span
-                                                    class="counter-anim">914,001</span></span>
-                                            <span class="capitalize-font block">visits</span>
+                                                    class="counter-anim">{{ $TotalTrips }}</span></span>
+                                            <span class="capitalize-font block">Total Trips</span>
+                                        </div>
+                                        <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
+                                            <i class="icon-globe data-right-rep-icon"></i>
+                                        </div>
+                                    </div>
+                                    <div class="progress-anim">
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-orange wow animated progress-animated"
+                                                role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4 col-xs-12">
+                <div class="panel panel-default card-view pa-0">
+                    <div class="panel-wrapper collapse in">
+                        <div class="panel-body pa-0">
+                            <div class="sm-data-box">
+
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <div class="col-xs-6 text-start ps-20 pr-0 data-wrap-left">
+                                            <span class="txt-dark block counter">{{ $CompletedTrips }}</span>
+                                            <span class="capitalize-font block">Completed Trips</span>
                                         </div>
                                         <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
                                             <i class="icon-globe data-right-rep-icon"></i>
@@ -81,43 +111,13 @@
                     <div class="panel-wrapper collapse in">
                         <div class="panel-body pa-0">
                             <div class="sm-data-box">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
-                                            <span class="txt-dark block counter"><span
-                                                    class="counter-anim">46.41</span>%</span>
-                                            <span class="capitalize-font block">bounce rate</span>
-                                        </div>
-                                        <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
-                                            <i class="icon-eye  data-right-rep-icon"></i>
-                                        </div>
-                                    </div>
-                                    <div class="progress-anim">
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-orange
-                        wow animated progress-animated"
-                                                role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4 col-xs-12">
-                <div class="panel panel-default card-view pa-0">
-                    <div class="panel-wrapper collapse in">
-                        <div class="panel-body pa-0">
-                            <div class="sm-data-box">
 
                                 <div class="container-fluid">
                                     <div class="row">
-                                        <div class="col-xs-6 text-center pl-0 pr-0 data-wrap-left">
-                                            <span class="txt-dark block counter"><span
-                                                    class="counter-anim">914,001</span></span>
-                                            <span class="capitalize-font block">visits</span>
+                                        <div class="col-xs-6 text-start ps-20 pr-0 data-wrap-left">
+                                            <span
+                                                class="txt-dark block counter">{{ format_currency($OverallAllocationBudget, $exchange->rate, $exchange->symbol) }}</span>
+                                            <span class="capitalize-font block">Overall Budget Allocated</span>
                                         </div>
                                         <div class="col-xs-6 text-center  pl-0 pr-0 data-wrap-right">
                                             <i class="icon-globe data-right-rep-icon"></i>
@@ -143,198 +143,96 @@
         <div class="row">
             <div class="col-sm-8">
                 <div class="row">
-
                     <div class="col-sm-12 col-xs-12">
-                        <h3>Your Active Trip</h3>
+                        <h3 class="mt-20 mb-20">Your Active Trip</h3>
                         <div class=" activetrip">
                             <div class="row">
-                                <div class="col-sm-4">
-                                    <h4 class="boldheading">Maldives trip</h4>
-                                    <p class="text-light bold mt-5">Destination: <span class="thin">Maldives</span>
+                                <div class="col-sm-6">
+                                    <h4 class="boldheading">{{ $activeTrip->tripName }}</h4>
+                                    <p class="text-light bold mt-5">Destination: <span
+                                            class="thin">{{ $activeTrip->trip_destination->name }}</span>
                                     </p>
-                                    <p class="text-light bold">Start Date: <span class="thin">dd/mm/yyyy</span></p>
-                                    <p class="text-light bold">End Date: <span class="thin">dd/mm/yyyy</span></p>
-                                    <p class="text-light bold">Status: <span class="thin">Active</span></p>
+                                    <p class="text-light bold">Start Date: <span
+                                            class="thin">{{ $activeTrip->startDate->format('y-m-d') }}</span></p>
+                                    <p class="text-light bold">End Date: <span
+                                            class="thin">{{ $activeTrip->endDate->format('y-m-d') }}</span></p>
+                                    <p class="text-light bold">Status: <span
+                                            class="thin">{{ $activeTrip->status == 1 ? 'Active' : 'Completed' }}</span>
+                                    </p>
 
-                                    <h4 class="boldheading">Key Itinerary Items</h4>
-                                    <p class="text-light bold mt-5">Transport: <span class="thin">Free</span></p>
-                                    <p class="text-light bold">Lodging: <span class="thin">0$</span></p>
-                                    <p class="text-light bold">Budget: <span class="thin">0$</span></p>
-
-                                    <h4 class="boldheading">Activities</h4>
-                                    <p class="text-light">Visit Hotel</p>
-                                    <p class="text-light">Spend Day on Beach</p>
-                                    <p class="text-light">Go on spa</p>
+                                    <h5 class="boldheading">Itinerary Items & Activities</h5>
+                                    @for ($i = 0; $i < 4 && $i < count($activeTrip->accomodations); $i++)
+                                        <p class="text-light bold mt-5">{{ $activeTrip->accomodations[$i]->type }}:
+                                            <span
+                                                class="thin">{{ $activeTrip->accomodations[$i]->AccomodationOrActivity }}</span>
+                                        </p>
+                                    @endfor
                                 </div>
 
-                                <div class="col-sm-4">IMAGE
-
+                                <div class="col-sm-6 p-0">
+                                    <img src="{{ $activeTrip->trip_destination->image }}" style="width: 100%"
+                                        alt="">
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <input type="submit" class="btn btn-light viewbtn" value="View Details">
+                                        <a class="btn btn-default viewbtn"
+                                            href="{{ route('Pages.TripeDetails', ['id' => $activeTrip->id]) }}">View
+                                            Details</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 mt-5">
-                            <!-- First Card -->
-                            <div class="col-sm-6 col-xs-12">
-                                <div class="panel panel-default card-view pa-0" style="min-height: 250px;">
-                                    <div class="panel-wrapper collapse in">
-                                        <div class="panel-body pa-0">
-                                            <div class="sm-data-box">
-                                                <div class="container-fluid">
-                                                    <!-- Image Placeholder -->
-                                                    <div class="row">
-                                                        <div class="col-xs-12 mt-5">
-                                                            <div class="cards"
-                                                                style="width: 100%; height: 150px; background-color: #f0f0f0; text-align: center; display: flex; justify-content: center; align-items: center;">
-                                                                <span style="color: #aaa;">Image Placeholder</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Destination Details -->
-                                                    <div class="row mt-10">
-                                                        <div class="col-xs-6 text-left">
-                                                            <h4 class="txt-dark">Paris, France</h4>
-                                                            <p>Dates: 1st Oct - 7th Oct 2024</p>
-                                                            <p>Itinerary: Eiffel Tower, Louvre</p>
-                                                            <p>Budget: $1200 per person</p>
-                                                            <br>
-                                                        </div>
-                                                        <div class="col-xs-6 text-right">
-                                                            <i class="icon-globe data-right-rep-icon"
-                                                                style="font-size: 40px;"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Second Card -->
-                            <div class="col-sm-6 col-xs-12">
-                                <div class="panel panel-default card-view pa-0" style="min-height: 250px;">
-                                    <div class="panel-wrapper collapse in">
-                                        <div class="panel-body pa-0">
-                                            <div class="sm-data-box">
-                                                <div class="container-fluid">
-                                                    <!-- Image Placeholder -->
-                                                    <div class="row">
-                                                        <div class="col-xs-12 mt-5">
-                                                            <div class="cards"
-                                                                style="width: 100%; height: 150px; background-color: #f0f0f0; text-align: center; display: flex; justify-content: center; align-items: center;">
-                                                                <span style="color: #aaa;">Image Placeholder</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Destination Details -->
-                                                    <div class="row mt-10">
-                                                        <div class="col-xs-6 text-left">
-                                                            <h4 class="txt-dark">Maldives</h4>
-                                                            <p>Dates: 15th Nov - 22nd Nov 2024</p>
-                                                            <p>Itinerary: Snorkeling, Island Tours</p>
-                                                            <p>Budget: $2000 per person</p>
-                                                            <br>
-                                                        </div>
-                                                        <div class="col-xs-6 text-right">
-                                                            <i class="icon-globe data-right-rep-icon"
-                                                                style="font-size: 40px;"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+                        <div class="col-12 mt-30 mb-20">
+                            <h3>Your Upcoming Trip</h3>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12 mt-5">
-                            <!-- First Card -->
-                            <div class="col-sm-6 col-xs-12">
-                                <div class="panel panel-default card-view pa-0" style="min-height: 250px;">
+                        @foreach ($trips as $trip)
+                            @php
+                                $exchange = App\Models\currencyExchange::where('base', $trip->currency)
+                                    ->where('conversion', Auth::user()->currency_preference)
+                                    ->first();
+                            @endphp
+                            <div class="col-12 col-lg-6 col-md-4 col-sm-4">
+                                <div class="panel panel-default card-view pa-0">
                                     <div class="panel-wrapper collapse in">
                                         <div class="panel-body pa-0">
-                                            <div class="sm-data-box">
-                                                <div class="container-fluid">
-                                                    <!-- Image Placeholder -->
-                                                    <div class="row">
-                                                        <div class="col-xs-12 mt-5">
-                                                            <div class="cards"
-                                                                style="width: 100%; height: 150px; background-color: #f0f0f0; text-align: center; display: flex; justify-content: center; align-items: center;">
-                                                                <span style="color: #aaa;">Image Placeholder</span>
-                                                            </div>
-                                                        </div>
+                                            <article class="col-item">
+                                                <div class="photo">
+                                                    <div class="options" style="right: 0px">
+                                                        <a href="{{ route('page.edit.trip', ['id' => $trip->id]) }}"
+                                                            style="background-color: #ff6028; padding: 6px 12px; border-radius: 100%; color: white;"
+                                                            class="font-18 bg-oranage mr-10 pull-left"><i
+                                                                class="zmdi zmdi-edit"></i></a>
                                                     </div>
-                                                    <!-- Destination Details -->
-                                                    <div class="row mt-10">
-                                                        <div class="col-xs-6 text-left">
-                                                            <h4 class="txt-dark">Bali, Indonesia</h4>
-                                                            <p>Dates: 10th Dec - 17th Dec 2024</p>
-                                                            <p>Itinerary: Ubud, Beaches, Temples</p>
-                                                            <p>Budget: $1500 per person</p>
-                                                            <br>
-                                                        </div>
-                                                        <div class="col-xs-6 text-right">
-                                                            <i class="icon-globe data-right-rep-icon"
-                                                                style="font-size: 40px;"></i>
-                                                        </div>
+
+                                                    <a href="javascript:void(0);"> <img
+                                                            src="{{ asset($trip->trip_destination->image) }}"
+                                                            class="img-responsive" style="width: 100%"
+                                                            alt="Product Image">
+                                                    </a>
+                                                </div>
+                                                <div class="info" style="padding: 16px">
+                                                    <h6><span>{{ $trip->tripName }}</span></h6>
+                                                    <p><i class="zmdi zmdi-pin"></i> {{ $trip->trip_destination->name }}
+                                                    </p>
+                                                    <p><i class="zmdi zmdi-balance-wallet"></i>
+                                                        {{ format_currency($trip->budget, $exchange->rate, $exchange->symbol) }}
+                                                    </p>
+                                                    <p>{{ $trip->trip_destination->description }}
+                                                    </p>
+                                                    <div class="mt-10">
+                                                        <a href="{{ route('Pages.TripeDetails', ['id' => $trip->id]) }}"
+                                                            class="btn btn-orange">View Details</a>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </article>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Second Card -->
-                            <div class="col-sm-6 col-xs-12">
-                                <div class="panel panel-default card-view pa-0" style="min-height: 250px;">
-                                    <div class="panel-wrapper collapse in">
-                                        <div class="panel-body pa-0">
-                                            <div class="sm-data-box">
-                                                <div class="container-fluid">
-                                                    <!-- Image Placeholder -->
-                                                    <div class="row">
-                                                        <div class="col-xs-12 mt-5">
-                                                            <div class="cards"
-                                                                style="width: 100%; height: 150px; background-color: #f0f0f0; text-align: center; display: flex; justify-content: center; align-items: center;">
-                                                                <span style="color: #aaa;">Image Placeholder</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Destination Details -->
-                                                    <div class="row mt-10">
-                                                        <div class="col-xs-6 text-left">
-                                                            <h4 class="txt-dark">Tokyo, Japan</h4>
-                                                            <p>Dates: 5th Jan - 12th Jan 2025</p>
-                                                            <p>Itinerary: Tokyo Tower, Shibuya, Temples</p>
-                                                            <p>Budget: $1800 per person</p>
-                                                            <br>
-                                                        </div>
-                                                        <div class="col-xs-6 text-right">
-                                                            <i class="icon-globe data-right-rep-icon"
-                                                                style="font-size: 40px;"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-
-
                 </div>
             </div>
             <div class="col-sm-4">
@@ -355,93 +253,25 @@
                             <div class="panel-wrapper collapse in">
                                 <div class="panel-body">
                                     <div class="streamline user-activity">
-                                        <div class="sl-item">
-                                            <a href="javascript:void(0)">
-                                                <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                                    <img class="img-responsive img-circle" src="../img/user.png"
-                                                        alt="avatar" />
-                                                </div>
-                                                <div class="sl-content">
-                                                    <p class="inline-block"><span
-                                                            class="capitalize-font txt-orange mr-5 weight-500">Clay
-                                                            Masse</span><span>invited to join the meeting in the
-                                                            conference room at 9.45 am</span></p>
-                                                    <span class="block txt-grey font-12 capitalize-font">3
-                                                        Min</span>
-                                                </div>
-                                            </a>
-                                        </div>
-
-                                        <div class="sl-item">
-                                            <a href="javascript:void(0)">
-                                                <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                                    <img class="img-responsive img-circle" src="../img/user1.png"
-                                                        alt="avatar" />
-                                                </div>
-                                                <div class="sl-content">
-                                                    <p class="inline-block"><span
-                                                            class="capitalize-font txt-orange mr-5 weight-500">Evie
-                                                            Ono</span><span>added three new photos in the
-                                                            library</span></p>
-                                                    <div class="activity-thumbnail">
-                                                        <img src="../img/thumb-1.jpg" alt="thumbnail" />
-                                                        <img src="../img/thumb-2.jpg" alt="thumbnail" />
-                                                        <img src="../img/thumb-3.jpg" alt="thumbnail" />
+                                        @foreach ($activities as $item)
+                                            <div class="sl-item">
+                                                <a href="javascript:void(0)">
+                                                    <div class="sl-avatar avatar avatar-sm avatar-circle">
+                                                        <img class="img-responsive img-circle"
+                                                            src="{{ asset(Auth::user()->image_url) }}"
+                                                            style="object-fit: cover;" alt="avatar" />
                                                     </div>
-                                                    <span class="block txt-grey font-12 capitalize-font">8
-                                                        Min</span>
-                                                </div>
-                                            </a>
-                                        </div>
+                                                    <div class="sl-content">
+                                                        <p class="inline-block"><span
+                                                                class="capitalize-font txt-orange mr-5 weight-500">{{ Auth::user()->FirstName . ' ' . Auth::user()->LastName }}</span>
+                                                            <span>{{ $item->AccomodationOrActivity }}</span>
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        @endforeach
 
-                                        <div class="sl-item">
-                                            <a href="javascript:void(0)">
-                                                <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                                    <img class="img-responsive img-circle" src="../img/user2.png"
-                                                        alt="avatar" />
-                                                </div>
-                                                <div class="sl-content">
-                                                    <p class="inline-block"><span
-                                                            class="capitalize-font txt-orange mr-5 weight-500">madalyn
-                                                            rascon</span><span>assigned a new task</span></p>
-                                                    <span class="block txt-grey font-12 capitalize-font">28
-                                                        Min</span>
-                                                </div>
-                                            </a>
-                                        </div>
 
-                                        <div class="sl-item">
-                                            <a href="javascript:void(0)">
-                                                <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                                    <img class="img-responsive img-circle" src="../img/user3.png"
-                                                        alt="avatar" />
-                                                </div>
-                                                <div class="sl-content">
-                                                    <p class="inline-block"><span
-                                                            class="capitalize-font txt-orange mr-5 weight-500">Ezequiel
-                                                            Merideth</span><span>completed project
-                                                            wireframes</span></p>
-                                                    <span class="block txt-grey font-12 capitalize-font">yesterday</span>
-                                                </div>
-                                            </a>
-                                        </div>
-
-                                        <div class="sl-item">
-                                            <a href="javascript:void(0)">
-                                                <div class="sl-avatar avatar avatar-sm avatar-circle">
-                                                    <img class="img-responsive img-circle" src="../img/user4.png"
-                                                        alt="avatar" />
-                                                </div>
-                                                <div class="sl-content">
-                                                    <p class="inline-block"><span
-                                                            class="capitalize-font txt-orange mr-5 weight-500">jonnie
-                                                            metoyer</span><span>created a group 'Hencework' in
-                                                            the discussion forum</span></p>
-                                                    <span class="block txt-grey font-12 capitalize-font">18
-                                                        feb</span>
-                                                </div>
-                                            </a>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

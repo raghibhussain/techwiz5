@@ -21,6 +21,11 @@
 
         <div class="row">
             @foreach ($trips as $trip)
+                @php
+                $exchange = App\Models\currencyExchange::where('base', $trip->currency)
+                    ->where('conversion', Auth::user()->currency_preference)
+                    ->first();
+                @endphp
                 <div class="col-12 col-lg-4 col-md-4 col-sm-4">
                     <div class="panel panel-default card-view pa-0">
                         <div class="panel-wrapper collapse in">
@@ -41,11 +46,13 @@
                                     <div class="info" style="padding: 16px">
                                         <h6><span>{{ $trip->tripName }}</span></h6>
                                         <p><i class="zmdi zmdi-pin"></i> {{ $trip->trip_destination->name }} </p>
-                                        <p><i class="zmdi zmdi-balance-wallet"></i> ${{ $trip->budget }} </p>
+                                        <p><i class="zmdi zmdi-balance-wallet"></i>
+                                            {{ format_currency($trip->budget, $exchange->rate, $exchange->symbol) }} </p>
                                         <p>{{ $trip->trip_destination->description }}
                                         </p>
                                         <div class="mt-10">
-                                            <a class="btn btn-orange">View Details</a>
+                                            <a href="{{ route('Pages.TripeDetails', ['id' => $trip->id]) }}"
+                                                class="btn btn-orange">View Details</a>
                                         </div>
                                     </div>
                                 </article>
