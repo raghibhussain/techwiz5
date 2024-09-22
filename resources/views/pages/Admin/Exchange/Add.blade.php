@@ -9,7 +9,7 @@
             <!-- Breadcrumb -->
             <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="{{ route('Admin.Dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ route('Pages.ExpenseLog') }}"><span>Expenses</span></a></li>
                     <li class="active"><span>Expense Log</span></li>
                 </ol>

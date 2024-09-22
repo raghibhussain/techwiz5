@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -18,8 +19,10 @@ class NotificationController extends Controller
 
     public function getNotificationPage()
     {
+        $Notifications = Notification::where("user_id", Auth::user()->id)->paginate(10);
         return view('Pages.Notifications', [
-            'title' => 'All Notifications'
+            'title' => 'All Notifications',
+            'Notifications' => $Notifications
         ]);
     }
 }

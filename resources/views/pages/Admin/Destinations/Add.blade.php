@@ -9,7 +9,7 @@
             <!-- Breadcrumb -->
             <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="{{route('pages.dashboard')}}">Dashboard</a></li>
                     <li><a href="{{ route('Admin.Destination') }}"><span>Destinations</span></a></li>
                     <li class="active"><span>Add Destination</span></li>
                 </ol>

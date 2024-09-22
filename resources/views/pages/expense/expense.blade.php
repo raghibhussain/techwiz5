@@ -182,8 +182,7 @@
                                                 <tbody>
                                                     @foreach ($categoriesExpense as $expense)
                                                         <tr>
-                                                            <td><span
-                                                                    class="txt-dark weight-500">{{ $expense->type }}</span>
+                                                            <td><a href="{{route('Pages.ExpenseSlip', ['id' => $expense->id])}}" class="txt-dark weight-500">{{ $expense->type }}</a>
                                                             </td>
                                                             <td>{{ format_currency($expense->total_amount, $exchange->rate, $exchange->symbol) }}
                                                             </td>
@@ -223,15 +222,15 @@
                                             <table class="table table-hover mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th>Category</th>
+                                                        <th>Trips</th>
                                                         <th>Budget</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($TripsExpense as $expense)
                                                         <tr>
-                                                            <td><span
-                                                                    class="txt-dark weight-500">{{ $expense->tripName }}</span>
+                                                            <td><a href="{{ route('Pages.TripeDetails', ['id' => $expense->id]) }}"
+                                                                    class="txt-dark weight-500">{{ $expense->tripName }}</a>
                                                             </td>
                                                             <td>{{ format_currency($expense->budget, $exchange->rate, $exchange->symbol) }}
 

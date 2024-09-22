@@ -57,6 +57,13 @@
     </style>
     <!-- Main Content -->
     <div class="container pt-30">
+
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <h3>Hello {{ Auth::user()->FirstName }},</h3>
         <!-- Row -->
 
@@ -245,6 +252,15 @@
                                                     <div class="mt-10">
                                                         <a href="{{ route('Pages.TripeDetails', ['id' => $trip->id]) }}"
                                                             class="btn btn-orange">View Details</a>
+                                                        @if ($trip->status != '1' && $trip->status != '3' && !$hasAnyActiveTrip)
+                                                            <form style="display: inline-block"
+                                                                action="{{ route('Trip.Post.MarkAsActive', ['id' => $trip->id]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                <button type="submit" class="btn btn-default">Mark As
+                                                                    Active</button>
+                                                            </form>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </article>

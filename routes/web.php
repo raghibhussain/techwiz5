@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\FrontEndController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\DestinationController as UserDestinationController;
 use App\Http\Controllers\NotificationController;
@@ -16,16 +17,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        if (Auth::user()->email === 'admin@example.com') {
-            return redirect('admin/dashboard');
-        } else {
-            return redirect()->route('pages.dashboard');
-        }
-    } else {
-        return redirect()->route('Auth.login');
-    }
+Route::controller(FrontEndController::class)->group(function () {
+    Route::get("/", "index")->name("Frontend.Index");
 });
 
 Route::get('/login', [AuthController::class, 'getLoginPage'])->name('Auth.login');
@@ -44,9 +37,14 @@ Route::prefix('/')->group(function () {
         Route::get('trip/{id}', [TripController::class, 'getTripDetails'])->name('Pages.TripeDetails');
     });
 
+
     Route::prefix('expense')->group(function () {
         Route::get('/', [ExpenseController::class, 'getExpensePage'])->name('pages.expense');
         Route::get('log', [ExpenseController::class, 'getExpenseLogPage'])->name('Pages.ExpenseLog');
+        Route::prefix('slip')->group(function () {
+            Route::get('{id}', [ExpenseController::class, 'getSlipPage'])->name('Pages.ExpenseSlip');
+            Route::get('edit/{id}', [ExpenseController::class, 'getSlipEditPage'])->name('Pages.EditSlip');
+        });
     });
 
     Route::prefix('destination')->group(function () {
@@ -111,10 +109,16 @@ Route::prefix('api/v1')->group(function () {
     Route::prefix('trip')->group(function () {
         Route::post('add', [TripController::class, 'AddTrip'])->name('Trip.Post.Add');
         Route::post('edit', [TripController::class, 'EditTrip'])->name('Trip.Post.Edit');
+        Route::post('mark-as-completed/{id}', [TripController::class, 'MarkAsCompleted'])->name('Trip.Post.MarkAsCompleted');
+        Route::post('mark-as-active/{id}', [TripController::class, 'MarkAsActive'])->name('Trip.Post.MarkAsActive');
+        Route::post('delete/{id}', [TripController::class, 'DeleteTrip'])->name('Trip.Delete');
+        Route::post('filter', [TripController::class, 'getFilteredData'])->name('Trip.Filter');
     });
 
     Route::prefix('expense')->group(function () {
         Route::post('log', [ExpenseController::class, 'logExpenses'])->name('Expense.Log');
+        Route::post('delete', [ExpenseController::class, 'deleteSlip'])->name('Pages.DeleteSlip');
+        Route::post('update', [ExpenseController::class, 'updateSlip'])->name('UpdateSlip.Post');
     });
 
 

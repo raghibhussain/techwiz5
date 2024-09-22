@@ -241,6 +241,14 @@
         </div>
         <!-- /Row -->
 
+        @if ($trip->status == '1')
+            <form action="{{ route('Trip.Post.MarkAsCompleted', ['id' => $trip->id]) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-orange"
+                    style="position: fixed; bottom: 10px; right: 10px; z-index: 999;">Mark As
+                    Completed</button>
+            </form>
+        @endif
 
 
     </div>

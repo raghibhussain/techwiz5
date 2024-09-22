@@ -79,7 +79,8 @@ class AuthController extends Controller
 
             if (Auth::user()->email != 'admin@admin.com') {
                 $hasTrips = Trips::where('user_id', Auth::user()->id)->exists();
-                
+
+                session(['login_time' => now()]);
                 if ($hasTrips) {
                     $notify = new Notification;
                     $notify->user_id = Auth::user()->id;

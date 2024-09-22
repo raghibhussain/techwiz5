@@ -9,7 +9,7 @@
             <!-- Breadcrumb -->
             <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                 <ol class="breadcrumb">
-                    <li><a href="index.html">Dashboard</a></li>
+                    <li><a href="{{ route('pages.dashboard') }}">Dashboard</a></li>
                     <li><a href="{{ route('pages.trips') }}"><span>Trips</span></a></li>
                     <li class="active"><span>Create Trip</span></li>
                 </ol>
@@ -192,13 +192,22 @@
                                                         value="{{ $trip->flightduration }}" />
                                                 </div>
                                             </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <button type="button"
+                                                        class="btn removeThisFlight btn-orange btn-icon left-icon mr-10 pull-left">
+                                                        <i class="fa fa-minus"></i>
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     @endforeach
 
 
 
                                     {{-- Add Another Flights --}}
-                                    <div class="row" id="addAnotherFlightDiv">
+                                    <div class="row mt-10" id="addAnotherFlightDiv">
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <button id="AddAnotherAirPlan" type="button"
@@ -232,7 +241,7 @@
                                     @foreach ($accomodations as $item)
                                         <div class="row AccomodationAndActivity">
                                             <input type="hidden" class="accomodation_id" value="{{ $item->id }}">
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Type</label>
                                                     <select class="form-control form-select typeAcNew" name="typeAc"
@@ -247,7 +256,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Accomodation Or
                                                         Activity:</label>
@@ -256,12 +265,23 @@
                                                         value="{{ $item->AccomodationOrActivity }}" />
                                                 </div>
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label class="control-label mb-10">Amount</label>
                                                     <input type="number" class="form-control AccomodationAmount"
                                                         name="AccomodationAmount" id="AccomodationAmount"
                                                         value="{{ $item->Amount }}" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group pt-30"
+                                                    style="justify-content: center; display: flex;">
+                                                    <label for="control-label mb-10"></label>
+                                                    <button type="button"
+                                                        class="btn removeThisAccomodation btn-orange btn-icon left-icon mr-10 pull-left">
+                                                        <i class="fa fa-minus"></i>
+                                                        Remove
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -290,16 +310,24 @@
                                         <button class="btn btn-orange btn-icon left-icon mr-10 pull-left" id="AddBtn">
                                             <i class="fa fa-check"></i> <span>Update Trip</span></button>
                                         <button type="button" class="btn btn-default pull-left">Cancel</button>
-                                        <div class="clearfix"></div>
-                                    </div>
+
+
+                                        <input type="hidden" name="removeTheseFlights">
+                                        <input type="hidden" name="removeTheseAccomodations">
                                 </form>
+                                <form action="{{ route('Trip.Delete', ['id' => $trip->id]) }}" method="POST">
+                                    @csrf;
+                                    <button type="submit" class="btn btn-default pull-right">Delete</butt>
+                                </form>
+                                <div class="clearfix"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /Row -->
+    </div>
+    <!-- /Row -->
 
     </div>
 @endsection
@@ -563,11 +591,42 @@
             }
 
 
+            let RemoveFlightArray = [];
+            let RemoveAccomodationArray = [];
             $('form').on('submit', function() {
 
                 gatherAccomodationAndActivities();
                 getAllFlightDetails();
+                $("input[name='removeTheseFlights']").val(JSON.stringify(RemoveFlightArray));
+                $("input[name='removeTheseAccomodations']").val(JSON.stringify(RemoveAccomodationArray));
             })
+
+
+            $('.removeThisFlight').on('click', function() {
+
+                let parentFlightRow = $(this).closest('.FlightsAndAirplane');
+
+                let id = parentFlightRow.find('.flight_id').val();
+
+                parentFlightRow.remove();
+
+                RemoveFlightArray.push(id);
+
+                console.log(RemoveFlightArray);
+            });
+            $('.removeThisAccomodation').on('click', function() {
+
+                let parentFlightRow = $(this).closest('.AccomodationAndActivity');
+
+                let id = parentFlightRow.find('.accomodation_id').val();
+
+                parentFlightRow.remove();
+
+                RemoveAccomodationArray.push(id);
+
+                console.log(RemoveFlightArray);
+            });
+
 
         })
     </script>

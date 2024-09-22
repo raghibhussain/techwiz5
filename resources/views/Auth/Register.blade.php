@@ -34,9 +34,9 @@
     <div class="wrapper  pa-0">
         <header class="sp-header">
             <div class="sp-logo-wrap pull-left">
-                <a href="index.html">
-                    <img class="brand-img mr-10" src="../img/logo.png" alt="brand" />
-                    <span class="brand-text"><img src="../img/brand.png" alt="brand" /></span>
+                <a href="{{ route('/') }}">
+                    <img class="brand-img mr-10" src="{{ asset('img/expensevoygaye.png') }}" alt="brand" />
+                    <span class="brand-text"><img src="{{ asset('img/expensevoygaye.png') }}" alt="brand" /></span>
                 </a>
             </div>
             <div class="form-group mb-0 pull-right">

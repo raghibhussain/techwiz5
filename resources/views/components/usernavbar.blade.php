@@ -29,13 +29,13 @@
               </ul>
           </li>
           <li>
-              <a href="javascript:void(0);" data-toggle="collapse" data-target="#expense_dr">
+              <a href="javascript:void(0);" data-toggle="collapse" data-target="#destination_dr">
                   <div class="pull-left"><i class="zmdi zmdi-map  mr-10"></i><span
                           class="right-nav-text">Destinations</span></div>
                   <div class="pull-right"><i class="ti-angle-down"></i></div>
                   <div class="clearfix"></div>
               </a>
-              <ul id="expense_dr" class="collapse collapse-level-1">
+              <ul id="destination_dr" class="collapse collapse-level-1">
                   <li>
                       <a href="{{ route('Pages.Destination') }}">View All</a>
                   </li>

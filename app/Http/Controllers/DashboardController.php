@@ -40,6 +40,9 @@ class DashboardController extends Controller
 
         $activities = activity_accomodation::where('user_id', Auth::user()->id)->get();
 
+        $hasAnyActiveTrip = Trips::where('user_id', Auth::user()->id)->where('status', '1')->exists();
+
+
         return view('Pages.Dashboard', [
             'title' => 'Dashboard',
             'TotalTrips' => $TotalTrips,
@@ -48,7 +51,8 @@ class DashboardController extends Controller
             'exchange' => $exchange,
             'trips' => $trips,
             'activeTrip' => $activeTrip,
-            'activities' => $activities
+            'activities' => $activities,
+            'hasAnyActiveTrip' => $hasAnyActiveTrip
         ]);
     }
 }

@@ -173,7 +173,7 @@
                                                                                                         @foreach ($currencies as $currency)
                                                                                                             <option
                                                                                                                 value="{{ $currency->base }}"
-                                                                                                                {{ $currency->base === Auth::user()->CurrencyPref }}>
+                                                                                                                {{ $currency->base === Auth::user()->currency_preference }}>
                                                                                                                 {{ $currency->base }}
                                                                                                             </option>
                                                                                                         @endforeach

@@ -9,6 +9,7 @@ use App\Models\Flights;
 use App\Models\Trips;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class TripController extends Controller
@@ -109,13 +110,22 @@ class TripController extends Controller
 
         $trips = Trips::where('user_id', Auth::user()->id)->with('trip_destination', 'accomodations')->get();
 
-
+        if (count($trips) > 0) {
+            $minDate = $trips->min('startDate');
+            $maxDate = $trips->max('endDate');
+        }
         $destinations = Destinations::all();
+        $hasAnyActiveTrip = Trips::where('user_id', Auth::user()->id)->where('status', '1')->exists();
+
+
 
         return view('pages.Trips.trips', [
             'title' => 'All Trips',
             'destinations' => $destinations,
-            'trips' => $trips
+            'trips' => $trips,
+            'hasAnyActiveTrip' => $hasAnyActiveTrip,
+            'minDate' => $minDate,
+            'maxDate' => $maxDate
         ]);
     }
 
@@ -171,7 +181,8 @@ class TripController extends Controller
 
         $flightDetails = json_decode($req->input('FlightDetails'), true);
         $accomodationAndActivity = json_decode($req->input('AccomodationAndActivity'), true);
-
+        $removeTheseFlights = json_decode($req->input('removeTheseFlights'), true);
+        $removeTheseAccomodations = json_decode($req->input('removeTheseAccomodations'), true);
         // return response()->json($accomodationAndActivity);
 
         $flightDetailsValidator = Validator::make($flightDetails, [
@@ -238,11 +249,76 @@ class TripController extends Controller
             $expense->currency = $validate['currency'];
             $expense->save();
         }
+
+
+        foreach ($removeTheseFlights as $fligh) {
+            Flights::where('id', $fligh)->delete();
+        }
+
+        foreach ($removeTheseAccomodations as $ac) {
+            activity_accomodation::where('id', $ac)->delete();
+        }
+
         if (Auth::check() && Auth::user()->email === 'admin@admin.com') {
 
             return redirect()->route('Admin.trips')->with(['success' => 'Trip Updated Successfully']);
         } else {
             return redirect()->route('pages.trips')->with(['success' => 'Trip Updated Successfully']);
         }
+    }
+
+    public function MarkAsCompleted($id)
+    {
+        Trips::where('id', $id)->update(['status' => 3]);
+        return redirect()->route('pages.trips');
+    }
+
+    public function MarkAsActive($id)
+    {
+        Trips::where('id', $id)->update(['status' => 1]);
+        return redirect()->route('pages.trips');
+    }
+
+    public function DeleteTrip($id)
+    {
+        $Trp = Trips::where('id', $id)->where('user_id', Auth::user()->id)->first();
+
+        if (!$Trp) {
+            return back()->with(['error' => 'You are not authorized to delete this']);
+        }
+
+        if ($Trp) {
+            $Trp->delete();
+
+            return redirect()->route('pages.trips')->with(['success' => 'Trip Deleted Successfully']);
+        }
+    }
+
+
+    public function getFilteredData(Request $request)
+    {
+
+        $startDate = $request->input('start_date_filter');
+        $endDate = $request->input('end_date_filter');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        $filteredTrips = Trips::where('user_id', Auth::user()->id)
+            ->with('trip_destination', 'accomodations')
+            ->when($startDate, function ($query) use ($startDate) {
+                return $query->where('startDate', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                return $query->where('endDate', '<=', $endDate);
+            })
+            ->when($minPrice, function ($query) use ($minPrice) {
+                return $query->where('budget', '>=', $minPrice);
+            })
+            ->when($maxPrice, function ($query) use ($maxPrice) {
+                return $query->where('budget', '<=', $maxPrice);
+            })
+            ->get();
+
+        return response()->json($filteredTrips);
     }
 }

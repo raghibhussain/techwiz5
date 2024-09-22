@@ -96,14 +96,12 @@
                         class="mobile-only-view" href="javascript:void(0);"><i class="zmdi zmdi-search"></i></a>
                     <a id="toggle_mobile_nav" class="mobile-only-view" href="javascript:void(0);"><i
                             class="ti-more"></i></a>
-                    <form id="search_form" role="search" class="top-nav-search collapse pull-left">
+                    <form id="search_form" action="{{ route('Page.Search') }}"
+                        class="top-nav-search collapse pull-left">
                         <div class="input-group">
-                            <input type="text" name="example-input1-group2" class="form-control"
-                                placeholder="Search">
-                            <span class="input-group-btn">
-                                <button type="button" class="btn  btn-default" data-target="#search_form"
-                                    data-toggle="collapse" aria-label="Close" aria-expanded="true"><i
-                                        class="zmdi zmdi-search"></i></button>
+                            <input type="text" name="search" class="form-control" placeholder="Search By Trip Name">
+                            <span class="input-group-btn" style="z-index: 999; pointer-events: all;">
+                                <button type="submit" class="btn btn-default"><i class="zmdi zmdi-search"></i></button>
                             </span>
                         </div>
                     </form>
@@ -315,6 +313,14 @@
     <!-- Init JavaScript -->
     <script src="{{ asset('/dist/js/init.js') }}"></script>
     <script src="{{ asset('/dist/js/dashboard-data.js') }}"></script>
+
+    @php
+        $loginTime = session('login_time');
+        $timeSinceLogin = $loginTime ? now()->diffInMinutes($loginTime) : null;
+    @endphp
+    @if (session('login_time'))
+        <p>You have been logged in for {{ now()->diffInMinutes(session('login_time')) }} minutes.</p>
+    @endif
 
     <script>
         $('.readNotify').on('click', function() {

@@ -16,6 +16,7 @@ class ExpenseController extends Controller
     {
         $TotalBudget = Trips::where('user_id', Auth::user()->id)->sum('budget');
         $usedExpenses = activity_accomodation::where('user_id', Auth::user()->id)->sum('Amount');
+        // dd($usedExpenses);
 
         if ($TotalBudget > 0) {
             $usedPercentage = round(($usedExpenses / $TotalBudget) * 100, 2);
@@ -24,9 +25,9 @@ class ExpenseController extends Controller
             $usedPercentage = 0;
             $leftPercentage = 0;
         }
-        $ExpenseData = activity_accomodation::where('user_id', Auth::user()->id)->get();
 
-        if ($ExpenseData) {
+        $ExpenseData = activity_accomodation::where('user_id', Auth::user()->id)->get();
+        if (count($ExpenseData) > 0) {
             $currencyExchangeRate = currencyExchange::where('base', $ExpenseData[0]->currency)->where('conversion', Auth::user()->currency_preference)->first();
         } else {
             $currencyExchangeRate = new \stdClass();
@@ -35,15 +36,16 @@ class ExpenseController extends Controller
             $currencyExchangeRate->rate = 1;
             $currencyExchangeRate->symbol = "Rs";
         }
+
         $categorySpecificExpenceData = activity_accomodation::where('user_id', Auth::user()->id)
-            ->select('type', DB::raw('SUM(Amount) as total_amount'))
+            ->select(DB::raw('MIN(id) as id'), 'type', DB::raw('SUM(Amount) as total_amount'))
             ->groupBy('type')
             ->get();
 
 
 
         $TripsExpense = Trips::where('user_id', Auth::user()->id)
-            ->select(['budget', 'tripName'])
+            ->select(['id', 'budget', 'tripName'])
             ->get();
 
 
@@ -64,8 +66,12 @@ class ExpenseController extends Controller
 
     public function getExpenseLogPage()
     {
-        $category = activity_accomodation::where('user_id', Auth::user()->id)->select('type')->get();
+        $category = activity_accomodation::where('user_id', Auth::user()->id)->select('type')->distinct()->get();
         $openTrip = Trips::where('user_id', Auth::user()->id)->select('tripName', 'id')->where('status', 1)->first();
+
+        if (!$openTrip) {
+            return redirect()->route('pages.dashboard')->with(["error" => "You don't have any active trip, please activate a trip to log expense"]);
+        }
 
         return view('pages.expense.log', [
             'title' => 'Log Expense',
@@ -119,5 +125,65 @@ class ExpenseController extends Controller
         }
 
         return redirect()->route('pages.expense')->with(['success' => 'Expense Logged Successfully']);
+    }
+
+    public function getSlipPage($id)
+    {
+        $Slip = activity_accomodation::where('id', $id)->first();
+        return view('pages.expense.slip', [
+            'title' => $Slip->type . ' Slip',
+            'slip' => $Slip
+        ]);
+    }
+
+    public function getSlipEditPage($id)
+    {
+        $Slip = activity_accomodation::where('id', $id)->first();
+        $category = activity_accomodation::where('user_id', Auth::user()->id)->select('type')->distinct()->get();
+
+        return view('pages.expense.slipEdit', [
+            'title' => $Slip->type . ' Edit',
+            'slip' => $Slip,
+            'category' => $category,
+
+        ]);
+    }
+
+    public function deleteSlip(Request $req)
+    {
+        $record = activity_accomodation::find($req->slip_id);
+        if ($record) {
+            $record->delete();
+
+            return redirect()->route('pages.expense')->with(['success' => 'Slip Deleted Successfully']);
+        } else {
+            return redirect()->route('pages.expense')->with(['error' => 'Slip not found']);
+        }
+    }
+
+    public function updateSlip(Request $req)
+    {
+        $validate = $req->validate(
+            [
+                'slip_id' => 'required|string',
+                "category" => 'required|string',
+                'Amount' => 'required|string',
+                'ExpesnseNote' => 'required|string'
+            ],
+            [
+                'slip_id.required' => "There is error updaing your slip",
+                'category.required' => 'Please select or add new category',
+                'Amount.required' => 'Please input amount',
+                'ExpesnseNote.required' => 'Please Enter Expense Note'
+            ]
+        );
+
+        $Slip = activity_accomodation::where('id', $req->slip_id)->first();
+        $Slip->type = $validate['category'];
+        $Slip->Amount = $validate['Amount'];
+        $Slip->AccomodationOrActivity = $validate['ExpesnseNote'];
+        $Slip->save();
+
+        return redirect()->route('pages.expense')->with(['success' => 'Slip Updated Successfully']);
     }
 }
