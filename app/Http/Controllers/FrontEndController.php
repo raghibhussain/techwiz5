@@ -9,10 +9,31 @@ class FrontEndController extends Controller
   public function index()
   {
     return view(
-      'Frontend.Frontend-layout',
+      'Frontend.Home',
       [
         'title' => 'Home'
       ]
     );
+  }
+
+  public function About()
+  {
+    return view('Frontend.about', [
+      'title' => 'About Us'
+    ]);
+  }
+
+  public function Contact()
+  {
+    return view("Frontend.contact", [
+      'title' => 'Contact'
+    ]);
+  }
+
+  public function Faq()
+  {
+    return view('Frontend.Faq', [
+      'title' => 'Frequently Asked Questions'
+    ]);
   }
 }

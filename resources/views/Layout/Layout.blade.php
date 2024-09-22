@@ -194,8 +194,11 @@
         </nav>
         <!-- /Top Menu Items -->
 
+        @if (Auth::user()->email == 'admin@admin.com')
+        <x-admin-navbar></x-admin-navbar>
+        @else
         <x-usernavbar></x-usernavbar>
-        {{-- <x-admin-navbar></x-admin-navbar> --}}
+        @endif
 
 
         <!-- Main Content -->
@@ -314,13 +317,7 @@
     <script src="{{ asset('/dist/js/init.js') }}"></script>
     <script src="{{ asset('/dist/js/dashboard-data.js') }}"></script>
 
-    @php
-        $loginTime = session('login_time');
-        $timeSinceLogin = $loginTime ? now()->diffInMinutes($loginTime) : null;
-    @endphp
-    @if (session('login_time'))
-        <p>You have been logged in for {{ now()->diffInMinutes(session('login_time')) }} minutes.</p>
-    @endif
+
 
     <script>
         $('.readNotify').on('click', function() {

@@ -41,6 +41,22 @@
                                     </h6>
                                     <hr class="light-grey-hr" />
                                     <div class="row">
+
+                                        @if (Auth::user()->email == 'admin@admin.com')
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label for="user_id" class="control-label">Select User</label>
+                                                    <select name="user_id" class="form-control form-select" id="user_id">
+                                                        <option value="">Select User</option>
+                                                        @foreach ($users as $user)
+                                                            <option value="{{ $user->id }}">
+                                                                {{ $user->FirstName . '' . $user->LastName }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        @endif
+
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Trip Name</label>
@@ -83,14 +99,14 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-8">
+                                        <div class="col-md-12">
                                             <div class="form-group">
                                                 <label class="mb-10 control-label">Budget</label>
                                                 <input type="number" name="Budget" class="form-control"
                                                     value="{{ old('Budget') }}" id="Budget" />
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        {{-- <div class="col-md-4">
                                             <div class="form-group">
                                                 <label class="control-label mb-10">Currency</label>
                                                 <select class="form-control" name="currency" tabindex="1">
@@ -101,7 +117,7 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
 
                                     <div class="seprator-block"></div>

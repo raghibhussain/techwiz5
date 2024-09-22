@@ -11,8 +11,8 @@
     <meta name="author" content="hencework" />
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="favicon.ico">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+    <link rel="icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon">
 
     <!-- vector map CSS -->
     <link href="{{ asset('vendors/bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.min.css') }}"
@@ -35,8 +35,10 @@
         <header class="sp-header">
             <div class="sp-logo-wrap pull-left">
                 <a href="{{ route('Auth.login') }}">
-                    <img class="brand-img mr-10" src="../img/logo.png" alt="brand" />
-                    <span class="brand-text"><img src="../img/brand.png" alt="brand" /></span>
+                    <img class="brand-img mr-10" src="{{ asset('img/expensevoygaye.png') }}" style="width: 100px;"
+                        alt="brand" />
+                    <span class="brand-text"><img src="{{ asset('img/expensevoygaye.png') }}" style="width: 100px;"
+                            alt="brand" /></span>
                 </a>
             </div>
             <div class="form-group mb-0 pull-right">

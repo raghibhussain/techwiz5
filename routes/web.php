@@ -19,6 +19,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(FrontEndController::class)->group(function () {
     Route::get("/", "index")->name("Frontend.Index");
+    Route::get('about', 'About')->name('Frontend.About');
+    Route::get('contact', 'Contact')->name('Frontend.Contact');
+    Route::get('frequently-ask-questions', 'Faq')->name('Frontend.FAQ');
 });
 
 Route::get('/login', [AuthController::class, 'getLoginPage'])->name('Auth.login');

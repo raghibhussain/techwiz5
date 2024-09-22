@@ -7,6 +7,7 @@ use App\Models\currencyExchange;
 use App\Models\Destinations;
 use App\Models\Flights;
 use App\Models\Trips;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,13 @@ class TripController extends Controller
     {
         $destinations = Destinations::select('id', 'name')->get();
         $currency = currencyExchange::select('base')->distinct()->get();
-
+        $users = User::all();
 
         return view('pages.Trips.add', [
             'title' => 'Add Trip',
             'destinations' => $destinations,
-            'currency' => $currency
+            'currency' => $currency,
+            'users' => $users
         ]);
     }
 
@@ -36,7 +38,6 @@ class TripController extends Controller
             'startDate' => 'required|date',
             'EndDate' => 'required|date',
             'Budget' => 'required|numeric',
-            'currency' => 'required|string',
             'FlightDetails' => 'required|json',
             'AccomodationAndActivity' => 'required|json'
         ]);
@@ -74,7 +75,7 @@ class TripController extends Controller
         $trip->startDate = $validate['startDate'];
         $trip->endDate = $validate['EndDate'];
         $trip->budget = $validate['Budget'];
-        $trip->currency = $validate['currency'];
+        $trip->currency = Auth::user()->currency_preference;
         $trip->status = 0;
         $trip->save();
 
@@ -98,7 +99,7 @@ class TripController extends Controller
             $expense->type = $exa['Type'];
             $expense->AccomodationOrActivity = $exa['AccomodationOrActivity'];
             $expense->Amount = $exa['AccomodationAmount'];
-            $expense->currency = $validate['currency'];
+            $expense->currency = Auth::user()->currency_preference;
             $expense->save();
         }
 
@@ -113,6 +114,9 @@ class TripController extends Controller
         if (count($trips) > 0) {
             $minDate = $trips->min('startDate');
             $maxDate = $trips->max('endDate');
+        } else {
+            $minDate = 0;
+            $maxDate = 0;
         }
         $destinations = Destinations::all();
         $hasAnyActiveTrip = Trips::where('user_id', Auth::user()->id)->where('status', '1')->exists();
@@ -174,7 +178,6 @@ class TripController extends Controller
             'startDate' => 'required|date',
             'EndDate' => 'required|date',
             'Budget' => 'required|numeric',
-            'currency' => 'required|string',
             'FlightDetails' => 'required|json',
             'AccomodationAndActivity' => 'required|json'
         ]);
@@ -214,7 +217,7 @@ class TripController extends Controller
         $trip->startDate = $validate['startDate'];
         $trip->endDate = $validate['EndDate'];
         $trip->budget = $validate['Budget'];
-        $trip->currency = $validate['currency'];
+        $trip->currency = Auth::user()->currency_preference;
         $trip->status = 0;
         $trip->save();
 
@@ -246,7 +249,7 @@ class TripController extends Controller
             $expense->type = $exa['Type'];
             $expense->AccomodationOrActivity = $exa['AccomodationOrActivity'];
             $expense->Amount = $exa['AccomodationAmount'];
-            $expense->currency = $validate['currency'];
+            $expense->currency = Auth::user()->currency_preference;
             $expense->save();
         }
 

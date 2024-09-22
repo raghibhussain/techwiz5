@@ -28,7 +28,7 @@
                                 <article class="col-item">
                                     <div class="photo">
                                         <div class="options" style="right: 0px">
-                                            <a href="add-products.html"
+                                            <a href="{{ route('Pages.EditDestination', ['id' => $destination->id]) }}"
                                                 style="background-color: #ff6028; padding: 6px 12px; border-radius: 100%; color: white;"
                                                 class="font-18 bg-oranage mr-10 pull-left"><i
                                                     class="zmdi zmdi-edit"></i></a>

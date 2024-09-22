@@ -176,7 +176,7 @@ class DestinationController extends Controller
         }
 
 
-        $destination->user_id = Auth::user()->id;
+        // $destination->user_id = Auth::user()->id;
         $destination->save();
 
         return redirect()->route('Pages.Destination')->with('success', 'Destination added successfully!');
