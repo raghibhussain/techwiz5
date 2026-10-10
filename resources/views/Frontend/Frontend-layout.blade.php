@@ -92,7 +92,7 @@
                     <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">
                         <li><a href="{{ route('Frontend.Index') }}">Home</a></li>
                         <li><a href="{{ route('Frontend.About') }}">About</a></li>
-                        <li><a href="{{ route('Frontend.FAQ') }}">FAQs</a></li>
+                        <li><a href="{{ route('Frontend.FAQ') }}">Privacy</a></li>
                         <li><a href="{{ route('Frontend.Contact') }}">Contact</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->

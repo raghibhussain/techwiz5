@@ -33,7 +33,7 @@ class FrontEndController extends Controller
   public function Faq()
   {
     return view('Frontend.Faq', [
-      'title' => 'Frequently Asked Questions'
+      'title' => 'Privacy Policy'
     ]);
   }
 }
